@@ -238,3 +238,5 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+build/vs2013/
+src/QtCreatorDeployment.txt
