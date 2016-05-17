@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest >
+  <asset-bundle root-dir="../AE/assets">
+    <layout filename="EmptySample_MainComp.layout"/>
+  </asset-bundle>
+</manifest>
