@@ -1,0 +1,18 @@
+{
+  "Quest":
+    {
+    "Name": "Test Quest",
+    "Description": "A test quest to be parsed and converted into a data model.",
+    "Objectives":{
+      "An objective as an object":{
+        "0": "Objective unresolved",
+        "1": "Objective resolved"
+      },
+      "An objective as an array": [
+        "Objective unresolved",
+        "Objective resolved first option",
+        "Objective resolved second option"
+      ]
+    }
+  }
+}
