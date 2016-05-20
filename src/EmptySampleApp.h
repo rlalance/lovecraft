@@ -3,6 +3,7 @@
 #define _EMPTYSAMPLEAPP_H_
 
 #include "framework/YiApp.h"
+#include <app/ApplicationConfiguration.h>
 
 /*!
  \defgroup empty-sample Empty Sample
@@ -22,9 +23,12 @@ public:
     EmptySampleApp();
     virtual ~EmptySampleApp();
 
+    void SetupApplicationConfiguration();
+    void SetApplicationFormFactor(ApplicationConfiguration& applicationConfiguration) const;
+    void SetApplicationPlatform(ApplicationConfiguration& applicationConfiguration) const;
     /*!
-     \details Application set up and initialization occurs here. This sample minimally loads and displays an exported layout.
-     */
+                 \details Application set up and initialization occurs here. This sample minimally loads and displays an exported layout.
+                 */
     virtual bool UserInit();
 
     /*!

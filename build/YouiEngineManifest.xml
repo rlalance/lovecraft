@@ -2,5 +2,6 @@
 <manifest >
   <asset-bundle root-dir="../AE/assets">
     <layout filename="EmptySample_MainComp.layout"/>
+    <layout dir="tablet" filename="MainNav_Main.layout"/>
   </asset-bundle>
 </manifest>
