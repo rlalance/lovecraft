@@ -1,0 +1,27 @@
+{ 
+    "Quest": 
+	{
+		"Name":"Test Quest",
+		"Description":"Test Quest Format Test!",
+		"Objectives": 
+		[
+			{
+				"Name":"Objective 1", 
+				"Resolution":
+				[
+					"Unresolved",
+					"Resolution 1"
+				]
+			},
+			{
+				"Name":"Objective 2", 
+				"Resolution":
+				[
+					"Unresolved",
+					"Resolution 1", 
+					"Resolution 2"
+				]
+			}
+		]
+    }
+}

@@ -1,5 +1,5 @@
-#ifndef QUEST_OBJECTIVE_MODEL
-#define QUEST_OBJECTIVE_MODEL
+#ifndef QUEST_OBJECTIVE_MODEL_H
+#define QUEST_OBJECTIVE_MODEL_H
 
 #include <utility\YiString.h>
 #include <datamodel\YiAbstractDataModel.h>
@@ -10,13 +10,20 @@ This Class is a model which contains all the possible resolutions of an objectiv
 class QuestObjectiveModel : CYIAbstractDataModel
 {
 public:
-	QuestObjectiveModel(CYIString name, YI_INT32 numberStates);
-	~QuestObjectiveModel();
-private: 
-	CYIString name;
+    QuestObjectiveModel(CYIString name);
+    ~QuestObjectiveModel();
 
-	//I wanted to use the specialized index class, but it has no public constructors, therefore the compiler would not buck at this class's constructor.
-	YI_INT32 currentState;
+    void SetUnresolvedText(CYIString text);
+    void AddResolutionText(CYIString text);
+
+    CYIString ToString();
+private:
+    void Initialize(CYIString name);
+
+    void SetResolutionText(YI_UINT32 index, CYIString text);
+
+    CYIString m_name;
+    YI_INT32 m_ncurrentState; //I wanted to use the specialized index class, but it has no public constructors.
 };
 
 #endif
