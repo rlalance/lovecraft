@@ -15,6 +15,7 @@
 > source_group("Quest"    REGULAR_EXPRESSION "quest/.*")
 
 ## Symbolic link to the youiengine folder
+Note: you will need administrator privilege to do this operation
 
-> mklink /J youiengine E:\Projets\youiengine
+> mklink /D youiengine E:\Projets\youiengine
 
