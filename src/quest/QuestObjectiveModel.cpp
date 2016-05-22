@@ -1,7 +1,9 @@
-#include "quest/QuestObjectiveModel.h"
+#include "QuestObjectiveModel.h"
 
 #include <utility\YiString.h>
 #include <datamodel\YiAbstractDataModel.h>
+#include <utility/YiRapidJSONUtility.h>
+#include "QuestObjectiveResolution.h"
 
 QuestObjectiveModel::QuestObjectiveModel(CYIString name) : CYIAbstractDataModel(1)
 {
@@ -11,7 +13,6 @@ QuestObjectiveModel::QuestObjectiveModel(CYIString name) : CYIAbstractDataModel(
 void QuestObjectiveModel::Initialize(CYIString name)
 {
     m_name = name;
-    m_ncurrentState = -1;
 }
 
 QuestObjectiveModel::~QuestObjectiveModel()
@@ -27,7 +28,6 @@ void QuestObjectiveModel::SetUnresolvedText(CYIString text)
     }
 
     SetResolutionText(0, text);
-    m_ncurrentState = 0;
 }
 
 void QuestObjectiveModel::AddResolutionText(CYIString text)
@@ -39,10 +39,15 @@ void QuestObjectiveModel::AddResolutionText(CYIString text)
     CYIDataModelIndex index = GetIndex(count - 1, 0);
     CYIAny resolutionText = CYIAny(text);
     
-    if (index.IsValid()) // Comes out invalid despite being within the bounds of the datamodel
+    if (index.IsValid())
     {
         SetItemData(index, resolutionText);
     }
+}
+
+void QuestObjectiveModel::AddResolution(QuestObjectiveResolution* resolution, YI_INT32 index)
+{
+
 }
 
 CYIString QuestObjectiveModel::ToString()
@@ -80,4 +85,28 @@ void QuestObjectiveModel::SetResolutionText(YI_UINT32 index, CYIString text)
     CYIAny resolutionText = CYIAny(text);
 
     SetItemData(cellIndex, resolutionText);
+}
+
+QuestObjectiveModel* QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& objectiveJSONObject)
+{
+    CYIParsingError parsingError;
+
+    CYIString name;
+
+    CYIRapidJSONUtility::GetStringField(&objectiveJSONObject, "Name", name, parsingError);
+    YI_ASSERT(!parsingError.HasError(), "QuestObjectiveModel::FromJSON", parsingError.GetParsingErrorMessage());
+
+    QuestObjectiveModel* newObjective = new QuestObjectiveModel(name);
+
+    const yi::rapidjson::Value& resolutions = objectiveJSONObject["Resolution"];
+
+    std::vector<CYIString> questResolutionList;
+    for (yi::rapidjson::SizeType r = 0; r < resolutions.Size(); ++r)
+    {
+        const yi::rapidjson::Value& resolution = resolutions[r];
+
+        newObjective->AddResolution(QuestObjectiveResolution::FromJSON(resolution), r);
+    }
+
+    return newObjective;
 }

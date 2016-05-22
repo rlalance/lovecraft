@@ -1,4 +1,5 @@
 #include "QuestParser.h"
+
 #include <utility\YiRapidJSONUtility.h>
 
 QuestModel* QuestParser::ParseQuest(const CYIString &filepath)
@@ -27,7 +28,7 @@ QuestModel* QuestParser::ParseQuest(const CYIString &filepath)
     //Parse Objectives --------------------
     const yi::rapidjson::Value& objectives = quest["Objectives"];
 
-    for (yi::rapidjson::SizeType i = 0; i < objectives.Size(); ++i) //The program inexplicably crashes during this for loop.
+    for (yi::rapidjson::SizeType i = 0; i < objectives.Size(); ++i)
     {
         const yi::rapidjson::Value& objective = objectives[i];
 
