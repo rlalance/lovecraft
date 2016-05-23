@@ -15,19 +15,15 @@ public:
     QuestObjectiveModel(CYIString name);
     ~QuestObjectiveModel();
 
-    void SetUnresolvedText(CYIString text);
-    void AddResolutionText(CYIString text);
-
+    void AddRowsToMatchIndex(YI_INT32 index);
     void AddResolution(QuestObjectiveResolution* resolution, YI_INT32 index);
 
-    CYIString ToString();
+    CYIString Display();
+
     static QuestObjectiveModel* FromJSON(const yi::rapidjson::Value& objectiveJSONObject);
-//    yi::rapidjson::Document* ToJSON();
 
 private:
     void Initialize(CYIString name);
-
-    void SetResolutionText(YI_UINT32 index, CYIString text);
 
     CYIString m_name;
 };

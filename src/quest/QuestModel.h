@@ -13,14 +13,12 @@ public:
     QuestModel(CYIString name, CYIString description);
     ~QuestModel();
 
-    void AddObjective(CYIString name, const std::vector<CYIString> resolutions);
-    void AddObjective(QuestObjectiveModel* objective);
-
-    CYIString ToString() const;
+    void AddRowsToMatchIndex(YI_INT32 index);
+    void AddObjective(QuestObjectiveModel* objective, YI_INT32 index);
 
     static QuestModel* FromJSON(const yi::rapidjson::Value& jsonObject);
 
-    yi::rapidjson::Document* ToJSON();
+    CYIString Display();
 
 private:
     void Initialize(CYIString name, CYIString description);

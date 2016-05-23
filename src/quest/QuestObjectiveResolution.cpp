@@ -6,6 +6,7 @@ QuestObjectiveResolution::QuestObjectiveResolution(CYIString description, CYIStr
 {
     m_description = description;
     m_condition = condition;
+    m_bConditionFullfilled = false;
 }
 
 QuestObjectiveResolution::~QuestObjectiveResolution()
@@ -20,11 +21,20 @@ QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson
     CYIString description;
     CYIString condition;
 
-    CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Name", description, parsingError);
+    CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Description", description, parsingError);
     YI_ASSERT(!parsingError.HasError(), "QuestObjectiveResolution::FromJSON", parsingError.GetParsingErrorMessage());
 
-    CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Name", condition, parsingError);
+    CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Resolution_Condition", condition, parsingError);
     YI_ASSERT(!parsingError.HasError(), "QuestObjectiveResolution::FromJSON", parsingError.GetParsingErrorMessage());
 
     return new QuestObjectiveResolution(description, condition);
+}
+
+CYIString QuestObjectiveResolution::Display()
+{
+    CYIString resolutionInfo;
+
+    resolutionInfo.Append(m_description + " (" + m_condition + ")");
+
+    return resolutionInfo;
 }

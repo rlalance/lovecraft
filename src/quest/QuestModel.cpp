@@ -18,39 +18,27 @@ QuestModel::~QuestModel()
 {
 }
 
-void QuestModel::AddObjective(CYIString name, const std::vector<CYIString> resolutions)
+void QuestModel::AddRowsToMatchIndex(YI_INT32 index)
 {
-    InsertRow(GetRowCount());
+    YI_INT32 n_row = GetRowCount();
+    YI_INT32 missingRows = (index + 1) - n_row;
 
-    CYIDataModelIndex index = GetIndex(GetRowCount()-1, 0);
-
-    if (index.IsValid())
+    if (missingRows > 0)
     {
-        CYISharedPtr<QuestObjectiveModel> pQuestObjectiveModel(new QuestObjectiveModel(name));
-
-        for (YI_UINT32 i = 0; i < resolutions.size(); ++i)
-        {
-            if (i == 0)
-            {
-                pQuestObjectiveModel->SetUnresolvedText(resolutions[i]);
-            }
-            else
-            {
-                pQuestObjectiveModel->AddResolutionText(resolutions[i]);
-            }
-        }
-
-        CYIAny objective(pQuestObjectiveModel);
-
-        SetItemData(index, objective);
+        InsertRows(n_row, missingRows);
     }
 }
 
-void QuestModel::AddObjective(QuestObjectiveModel* objective)
+void QuestModel::AddObjective(QuestObjectiveModel* objective, YI_INT32 index)
 {
-    
-}
+    AddRowsToMatchIndex(index);
 
+    if (HasIndex(index, 0))
+    {
+        CYISharedPtr<QuestObjectiveModel> objectivePtr = CYISharedPtr<QuestObjectiveModel>(objective);
+        SetItemData(GetIndex(index, 0), CYIAny(objectivePtr));
+    }
+}
 
 QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
 {
@@ -68,12 +56,13 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
     QuestModel* newQuest = new QuestModel(questName, questDescription);
 
     const yi::rapidjson::Value& objectives = questJSONObject["Objectives"];
+    YI_ASSERT(objectives.IsArray(), "QuestModel::FromJSON", "Could not find objectives array in JSON file.");
 
     for (yi::rapidjson::SizeType i = 0; i < objectives.Size(); ++i)
     {
         const yi::rapidjson::Value& objective = objectives[i];
 
-        newQuest->AddObjective(QuestObjectiveModel::FromJSON(objective));
+        newQuest->AddObjective(QuestObjectiveModel::FromJSON(objective), i);
     }
 
     return newQuest;
@@ -81,16 +70,13 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
 
 yi::rapidjson::Document* ToJSON();
 
-CYIString QuestModel::ToString() const
+CYIString QuestModel::Display()
 {
     CYIString questInfo;
-    questInfo.Append(m_name);
-    questInfo.Append(CYIString("\n"));
-    questInfo.Append(m_description);
+    questInfo.Append("QuestName: " + m_name + "\n");
+    questInfo.Append("QuestDescription: " + m_description + "\n");
 
-    //    YI_INT32 count = GetRowCount();
-
-    for (YI_INT32 i = 1; i < GetRowCount(); i++) //Skipping the first one because it is empty. Design flaw.
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {
         CYIAny data(GetItemData(GetIndex(i, 0)));
 
@@ -98,8 +84,7 @@ CYIString QuestModel::ToString() const
         {
             CYISharedPtr<QuestObjectiveModel> objective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
 
-            questInfo.Append("\n");
-            questInfo.Append(objective->ToString());
+            questInfo.Append(objective->Display() + "\n");
         }
     }
 

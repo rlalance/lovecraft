@@ -12,6 +12,8 @@ public:
 
     static QuestObjectiveResolution* FromJSON(const yi::rapidjson::Value& resolutionJSONObject);
 
+    CYIString Display();
+
 private:
     CYIString m_description;
     CYIString m_condition;
