@@ -240,3 +240,5 @@ _Pvt_Extensions
 .fake/
 build/vs2013/
 src/QtCreatorDeployment.txt
+youiengine
+build/AndroidNative/assets/resources/
