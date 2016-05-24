@@ -121,12 +121,12 @@ bool EmptySampleApp::UserStart()
 {
     // This is the first function called upon completion of engine and application initialization. Return false in case of failure.
 
-    CYIString assetPath = CYIApp::GetAssetsPath();
-    QuestModel* testQuest = QuestParser::ParseQuest(assetPath + "resources/RescueOperation.json");
+    //CYIString assetPath = CYIApp::GetAssetsPath();
+    //QuestModel* testQuest = QuestParser::ParseQuest(assetPath + "resources/RescueOperation.json");
 
-    CYIString testQuestString = testQuest->ToString();
+    //CYIString testQuestString = testQuest->ToString();
 
-    YI_LOGI("EmptySampleApp::UserStart", "%s", testQuestString.GetData());
+    //YI_LOGI("EmptySampleApp::UserStart", "%s", testQuestString.GetData());
     
 	return true;
 }

@@ -18,8 +18,7 @@ namespace Utility
 {
     enum GET_NODE_FLAG
     {
-        MANDATORY=0,
-        OPTIONAL
+        GET_NODE_FLAG_MANDATORY=0, GET_NODE_FLAG_OPTIONAL
     };
 
     enum test
@@ -37,14 +36,14 @@ namespace Utility
      * Note that the name is not required for this method.
      */
     template<typename Type>
-    inline Type *GetNode(CYISceneNode *pParent, GET_NODE_FLAG bOptionalFlag = MANDATORY)
+    inline Type *GetNode(CYISceneNode *pParent, GET_NODE_FLAG bOptionalFlag = GET_NODE_FLAG_MANDATORY)
     {
         Type *pNode = YI_NULL;
 
         YI_ASSERT(pParent, TAG, "Parent node is null");
         pNode = pParent->GetNode<Type>();
 
-        if (bOptionalFlag == MANDATORY)
+        if (bOptionalFlag == GET_NODE_FLAG_MANDATORY)
         {
             YI_ASSERT(pNode, TAG, "Missing node from parent: %s", pParent->GetName().GetData());
         }
@@ -57,7 +56,7 @@ namespace Utility
      * assertion if the node cannot be found(if the bOptionalFlag is set to MANDATORY) or is the wrong type.
      */
     template<typename Type>
-    inline Type *GetNode(CYISceneNode *pParent, const CYIString &name, GET_NODE_FLAG bOptionalFlag = MANDATORY)
+    inline Type *GetNode(CYISceneNode *pParent, const CYIString &name, GET_NODE_FLAG bOptionalFlag = GET_NODE_FLAG_MANDATORY)
     {
         Type *pNode = YI_NULL;
 
@@ -66,7 +65,7 @@ namespace Utility
             YI_ASSERT(pParent, TAG, "Parent node is null");
             pNode = pParent->GetNode<Type>(name);
 
-            if(bOptionalFlag == MANDATORY)
+            if (bOptionalFlag == GET_NODE_FLAG_MANDATORY)
             {
                 YI_ASSERT(pNode, TAG, "Missing node: %s", name.GetData());
             }
@@ -79,7 +78,7 @@ namespace Utility
      * \details Gets a node with the given name, failing
      * with an assertion if the node cannot be found if the bOptionalFlag is set to MANDATORY.
      */
-    inline CYISceneNode *GetNode(CYISceneNode *pParent, const CYIString &name, GET_NODE_FLAG bOptionalFlag = MANDATORY)
+    inline CYISceneNode *GetNode(CYISceneNode *pParent, const CYIString &name, GET_NODE_FLAG bOptionalFlag = GET_NODE_FLAG_MANDATORY)
     {
         return GetNode<CYISceneNode>(pParent, name, bOptionalFlag);
     }
