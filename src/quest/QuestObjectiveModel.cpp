@@ -51,15 +51,15 @@ QuestObjectiveModel* QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& o
     CYIRapidJSONUtility::GetStringField(&objectiveJSONObject, "Name", name, parsingError);
     YI_ASSERT(!parsingError.HasError(), "QuestObjectiveModel::FromJSON", parsingError.GetParsingErrorMessage());
 
-    QuestObjectiveModel* newObjective = new QuestObjectiveModel(name);
+    QuestObjectiveModel *newObjective = new QuestObjectiveModel(name);
 
-    const yi::rapidjson::Value& resolutions = objectiveJSONObject["Resolutions"];
+    const yi::rapidjson::Value &resolutions = objectiveJSONObject["Resolutions"];
     YI_ASSERT(resolutions.IsArray(), "QuestModel::FromJSON", "Could not find resolutions array in JSON file.");
 
     std::vector<CYIString> questResolutionList;
     for (yi::rapidjson::SizeType r = 0; r < resolutions.Size(); ++r)
     {
-        const yi::rapidjson::Value& resolution = resolutions[r];
+        const yi::rapidjson::Value &resolution = resolutions[r];
 
         newObjective->AddResolution(QuestObjectiveResolution::FromJSON(resolution), r);
     }
@@ -67,7 +67,7 @@ QuestObjectiveModel* QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& o
     return newObjective;
 }
 
-CYIString QuestObjectiveModel::Display()
+CYIString QuestObjectiveModel::ToString()
 {
     CYIString objectiveInfo;
     objectiveInfo.Append("ObjectiveName: " + m_name + "\n");
@@ -80,7 +80,7 @@ CYIString QuestObjectiveModel::Display()
         {
             CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
 
-            objectiveInfo.Append(std::to_string(i) + ": " + resolution->Display() + "\n");
+            objectiveInfo.Append(std::to_string(i) + ": " + resolution->ToString() + "\n");
         }
     }
 

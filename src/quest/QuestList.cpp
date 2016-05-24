@@ -40,27 +40,6 @@ QuestList* QuestList::FromJSON(yi::rapidjson::Document* document)
     return questList;
 }
 
-CYIString QuestList::Display()
-{
-    CYIString questListInfo;
-
-    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
-    {
-        CYIAny data(GetItemData(GetIndex(i, 0)));
-
-        if (!data.Empty())
-        {
-            CYISharedPtr<QuestModel> quest = data.Get<CYISharedPtr<QuestModel>>();
-            
-            questListInfo.Append("\n");
-
-            questListInfo.Append(quest->Display());
-        }
-    }
-
-    return questListInfo;
-}
-
 void QuestList::AddRowsToMatchIndex(YI_INT32 index)
 {
     YI_INT32 n_row = GetRowCount();
@@ -81,4 +60,25 @@ void QuestList::AddQuest(QuestModel* quest, YI_INT32 index)
         CYISharedPtr<QuestModel> questPtr = CYISharedPtr<QuestModel>(quest);
         SetItemData(GetIndex(index, 0), CYIAny(questPtr));
     }
+}
+
+CYIString QuestList::ToString()
+{
+    CYIString questListInfo;
+
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestModel> quest = data.Get<CYISharedPtr<QuestModel>>();
+
+            questListInfo.Append("\n");
+
+            questListInfo.Append(quest->ToString());
+        }
+    }
+
+    return questListInfo;
 }

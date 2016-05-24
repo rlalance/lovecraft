@@ -70,7 +70,7 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
 
 yi::rapidjson::Document* ToJSON();
 
-CYIString QuestModel::Display()
+CYIString QuestModel::ToString()
 {
     CYIString questInfo;
     questInfo.Append("QuestName: " + m_name + "\n");
@@ -84,7 +84,7 @@ CYIString QuestModel::Display()
         {
             CYISharedPtr<QuestObjectiveModel> objective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
 
-            questInfo.Append(objective->Display() + "\n");
+            questInfo.Append(objective->ToString() + "\n");
         }
     }
 

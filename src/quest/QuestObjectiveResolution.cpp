@@ -30,7 +30,7 @@ QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson
     return new QuestObjectiveResolution(description, condition);
 }
 
-CYIString QuestObjectiveResolution::Display()
+CYIString QuestObjectiveResolution::ToString()
 {
     CYIString resolutionInfo;
 

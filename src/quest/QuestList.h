@@ -1,5 +1,5 @@
-#ifndef QUEST_CONTROLLER_H
-#define QUEST_CONTROLLER_H
+#ifndef QUEST_LIST_H
+#define QUEST_LIST_H
 
 #include <utility\YiString.h>
 #include <datamodel\YiAbstractDataModel.h>
@@ -16,7 +16,7 @@ public:
     static QuestList* FromJSON(CYIString path);
     static QuestList* FromJSON(yi::rapidjson::Document* document);
 
-    CYIString Display();
+    CYIString ToString();
 
 private:
     void AddRowsToMatchIndex(YI_INT32 index);

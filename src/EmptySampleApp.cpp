@@ -1,4 +1,4 @@
-// © You i Labs Inc. 2000-2016. All rights reserved.
+﻿// © You i Labs Inc. 2000-2016. All rights reserved.
 #include "EmptySampleApp.h"
 
 #include "app/ApplicationConfiguration.h"
@@ -122,7 +122,7 @@ bool EmptySampleApp::UserStart()
     CYIString assetPath = CYIApp::GetAssetsPath();
     QuestList* quests = QuestList::FromJSON(assetPath + "resources/Quests.json");
 
-    YI_LOGI("EmptySampleApp::UserStart", "%s", quests->Display().GetData());
+    YI_LOGI("EmptySampleApp::UserStart", "%s", quests->ToString().GetData());
 
     delete quests;
 

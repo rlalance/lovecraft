@@ -1,11 +1,11 @@
 #ifndef QUEST_MODEL_H
 #define QUEST_MODEL_H
 
-#include <utility\YiString.h>
-#include <datamodel\YiAbstractDataModel.h>
-#include <utility\YiRapidJSONUtility.h>
-
 #include "QuestObjectiveModel.h"
+
+#include <utility\YiString.h>
+#include <utility\YiRapidJSONUtility.h>
+#include <datamodel\YiAbstractDataModel.h>
 
 class QuestModel : CYIAbstractDataModel
 {
@@ -18,7 +18,7 @@ public:
 
     static QuestModel* FromJSON(const yi::rapidjson::Value& jsonObject);
 
-    CYIString Display();
+    CYIString ToString();
 
 private:
     void Initialize(CYIString name, CYIString description);
@@ -26,5 +26,4 @@ private:
     CYIString m_name;
     CYIString m_description;
 };
-
 #endif

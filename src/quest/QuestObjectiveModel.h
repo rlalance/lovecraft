@@ -18,7 +18,7 @@ public:
     void AddRowsToMatchIndex(YI_INT32 index);
     void AddResolution(QuestObjectiveResolution* resolution, YI_INT32 index);
 
-    CYIString Display();
+    CYIString ToString();
 
     static QuestObjectiveModel* FromJSON(const yi::rapidjson::Value& objectiveJSONObject);
 
@@ -27,5 +27,4 @@ private:
 
     CYIString m_name;
 };
-
 #endif
