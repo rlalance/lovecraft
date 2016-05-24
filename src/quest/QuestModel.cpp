@@ -18,16 +18,65 @@ QuestModel::~QuestModel()
 {
 }
 
-CYIString QuestModel::ToString() const
+void QuestModel::AddRowsToMatchIndex(YI_INT32 index)
+{
+    YI_INT32 n_row = GetRowCount();
+    YI_INT32 missingRows = (index + 1) - n_row;
+
+    if (missingRows > 0)
+    {
+        InsertRows(n_row, missingRows);
+    }
+}
+
+void QuestModel::AddObjective(QuestObjectiveModel* objective, YI_INT32 index)
+{
+    AddRowsToMatchIndex(index);
+
+    if (HasIndex(index, 0))
+    {
+        CYISharedPtr<QuestObjectiveModel> objectivePtr = CYISharedPtr<QuestObjectiveModel>(objective);
+        SetItemData(GetIndex(index, 0), CYIAny(objectivePtr));
+    }
+}
+
+QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
+{
+    CYIParsingError parsingError;
+
+    CYIString questName;
+    CYIString questDescription;
+
+    CYIRapidJSONUtility::GetStringField(&questJSONObject, "Name", questName, parsingError);
+    YI_ASSERT(!parsingError.HasError(), "QuestModel::FromJSON", parsingError.GetParsingErrorMessage());
+
+    CYIRapidJSONUtility::GetStringField(&questJSONObject, "Description", questDescription, parsingError);
+    YI_ASSERT(!parsingError.HasError(), "QuestModel::FromJSON", parsingError.GetParsingErrorMessage());
+
+    QuestModel* newQuest = new QuestModel(questName, questDescription);
+
+    const yi::rapidjson::Value& objectives = questJSONObject["Objectives"];
+    YI_ASSERT(objectives.IsArray(), "QuestModel::FromJSON", "Could not find objectives array in JSON file.");
+
+    for (yi::rapidjson::SizeType i = 0; i < objectives.Size(); ++i)
+    {
+        const yi::rapidjson::Value& objective = objectives[i];
+
+        newQuest->AddObjective(QuestObjectiveModel::FromJSON(objective), i);
+    }
+
+    return newQuest;
+}
+
+yi::rapidjson::Document* ToJSON();
+
+CYIString QuestModel::ToString()
 {
     CYIString questInfo;
-    questInfo.Append(m_name);
-    questInfo.Append(CYIString("\n"));
-    questInfo.Append(m_description);
+    questInfo.Append("QuestName: " + m_name + "\n");
+    questInfo.Append("QuestDescription: " + m_description + "\n");
 
-//    YI_INT32 count = GetRowCount();
-
-    for (YI_INT32 i = 1; i < GetRowCount(); i++) //Skipping the first one because it is empty. Design flaw.
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {
         CYIAny data(GetItemData(GetIndex(i, 0)));
 
@@ -35,61 +84,9 @@ CYIString QuestModel::ToString() const
         {
             CYISharedPtr<QuestObjectiveModel> objective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
 
-            questInfo.Append("\n");
-            questInfo.Append(objective->ToString());
+            questInfo.Append(objective->ToString() + "\n");
         }
     }
 
     return questInfo;
-}
-
-void QuestModel::AddObjective(CYIString name, const std::vector<CYIString> resolutions)
-{
-    InsertRow(GetRowCount());
-
-    CYIDataModelIndex index = GetIndex(GetRowCount()-1, 0);
-
-    if (index.IsValid())
-    {
-        CYISharedPtr<QuestObjectiveModel> pQuestObjectiveModel(new QuestObjectiveModel(name));
-
-        for (YI_UINT32 i = 0; i < resolutions.size(); ++i)
-        {
-            if (i == 0)
-            {
-                pQuestObjectiveModel->SetUnresolvedText(resolutions[i]);
-            }
-            else
-            {
-                pQuestObjectiveModel->AddResolutionText(resolutions[i]);
-            }
-        }
-
-        CYIAny objective(pQuestObjectiveModel);
-
-        SetItemData(index, objective);
-    }
-}
-
-//Test Method
-void QuestModel::PopulateAndRead()
-{
-    //Populate
-    YI_INT32 nItems = 10;
-    CYIAbstractDataModel* model2 = new CYIAbstractDataModel(nItems, 1); //Now I know that this can be instantiated, even though I have yet to see an implementation of the class.
-
-    CYIAbstractDataModel model(nItems, 1); // nItems rows, 1 column
-    for (YI_INT32 i = 0; i < nItems; i++)
-    {
-        model2->SetItemData(model2->GetIndex(i, 0), CYIAny(CYIString::FromValue<YI_INT32>(i)));
-    }
-
-    //Reading a List of Strings :
-    for (YI_INT32 i = 0; i < nItems; i++)
-    {
-        CYIAny listData = model2->GetItemData(model2->GetIndex(i, 0));
-        YI_LOGD("DATAMODEL", "Contains %s at index %d", listData.Get<CYIString>().GetData(), i);
-    }
-
-    free(model2);
 }
