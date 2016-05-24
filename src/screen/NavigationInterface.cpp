@@ -10,15 +10,10 @@ const CYIString NavigationInterface::RESOURCE_TYPE_BUNDLE_KEY = "resourceType";
 
 void NavigationInterface::NavigateToScreen(SCREEN_ID eScreenId)
 {
-    NavigateToScreen(eScreenId, NO_REASON, CYIBundle());
-}
-
-void NavigationInterface::NavigateToScreen(SCREEN_ID eScreenId, REASON eReason)
-{
-    NavigateToScreen(eScreenId, eReason, CYIBundle());
+    NavigateToScreen(eScreenId, CYIBundle());
 }
 
 void NavigationInterface::NavigateToScreen(SCREEN_ID eScreenId, const CYIBundle &rBundle)
 {
-    NavigateToScreen(eScreenId, NO_REASON, rBundle);
+    NavigateToScreen(eScreenId, rBundle);
 }

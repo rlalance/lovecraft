@@ -31,6 +31,8 @@ bool EmptySampleApp::UserInit()
 {
     SetupApplicationConfiguration();
 
+    m_pAppController = new AppController(*this);
+
     // Load a layout file which will be the root scene view.
     CYISceneView *pSceneViewMain = GetSceneManager()->LoadScene("MainNav_Main.layout", CYISceneManager::SCALE_STRETCH, CYISceneManager::V_ALIGN_CENTER, CYISceneManager::H_ALIGN_CENTER);
 
@@ -126,7 +128,7 @@ bool EmptySampleApp::UserStart()
 
     delete quests;
 
-	return true;
+    return m_pAppController->Start();
 }
 
 void EmptySampleApp::UserUpdate()

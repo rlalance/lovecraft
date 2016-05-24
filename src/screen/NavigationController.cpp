@@ -46,7 +46,7 @@ void NavigationController::Start(SCREEN_ID eScreenId)
     if (m_NavigationRequests.size() > 0)
     {
         NavigationRequest navigationRequest = m_NavigationRequests.back();
-        NavigateToScreen(navigationRequest.eScreenId, navigationRequest.eReason, navigationRequest.bundle);
+        NavigateToScreen(navigationRequest.eScreenId, navigationRequest.bundle);
 
         // Empty the queue. We only care about the last item if more than
         // one request has come in before the controller is started.
@@ -61,7 +61,7 @@ void NavigationController::Start(SCREEN_ID eScreenId)
     }
 }
 
-void NavigationController::NavigateToScreen(SCREEN_ID eScreenId, REASON eReason, const CYIBundle &rBundle)
+void NavigationController::NavigateToScreen(SCREEN_ID eScreenId, const CYIBundle &rBundle)
 {
     // If there is an active transition we don't want to create and push a new screenviewcontroller to the
     // controllers list and connect it to the screentransitionmanager, because CYIScreenTransitionManager::PushScreen()
@@ -71,19 +71,11 @@ void NavigationController::NavigateToScreen(SCREEN_ID eScreenId, REASON eReason,
     {
         if (!m_bIsStarted)
         {
-            m_NavigationRequests.push(NavigationRequest(eScreenId, eReason, rBundle));
+            m_NavigationRequests.push(NavigationRequest(eScreenId, rBundle));
         }
         else if (ScreenViewController *pScreenViewController = CreateScreenViewController(eScreenId))
         {
-            switch (eReason)
-            {
-                case NO_REASON:
-                    m_ScreenTransitionManager.PushScreen(pScreenViewController, rBundle);
-                    break;
-                case DEEPLINK_REASON:
-                    m_ScreenTransitionManager.PushScreen(pScreenViewController, rBundle, BuildScreenHistoryFor(pScreenViewController));
-                    break;
-            }
+            m_ScreenTransitionManager.PushScreen(pScreenViewController, rBundle);
         }
     }
 }

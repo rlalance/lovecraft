@@ -2,8 +2,11 @@
 #ifndef _EMPTYSAMPLEAPP_H_
 #define _EMPTYSAMPLEAPP_H_
 
-#include "framework/YiApp.h"
-#include <app/ApplicationConfiguration.h>
+#include "app/ApplicationConfiguration.h"
+#include "app/AppController.h"
+
+#include <framework/YiApp.h>
+#include <smartptr/YiScopedPtr.h>
 
 /*!
  \defgroup empty-sample Empty Sample
@@ -40,6 +43,10 @@ public:
      \details Called on each frame before the update of the scene tree. This function may be used to drive other time-dependent components of an application which are not managed by You.i Engine. 
      */
     virtual void UserUpdate();
+
+private:
+    CYIScopedPtr<AppController> m_pAppController;
+
 };
 
 /* @} */

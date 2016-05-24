@@ -35,10 +35,8 @@ public:
     virtual ~NavigationInterface() {}
 
     void NavigateToScreen(SCREEN_ID eScreenId);
-    void NavigateToScreen(SCREEN_ID eScreenId, REASON eReason);
-    void NavigateToScreen(SCREEN_ID eScreenId, const CYIBundle &rBundle);
+    virtual void NavigateToScreen(SCREEN_ID eScreenId, const CYIBundle &rBundle);
 
-    virtual void NavigateToScreen(SCREEN_ID eScreenId, REASON eReason, const CYIBundle &rBundle) = 0;
     virtual void NavigateBack() = 0;
 
 };

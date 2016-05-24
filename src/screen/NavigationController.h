@@ -16,15 +16,13 @@ class NavigationController : public NavigationInterface, public CYIBackButtonHan
 {
     struct NavigationRequest
     {
-        NavigationRequest(SCREEN_ID e_screen_id, REASON e_reason, const CYIBundle& bundle)
+        NavigationRequest(SCREEN_ID e_screen_id, const CYIBundle& bundle)
             : eScreenId(e_screen_id),
-              eReason(e_reason),
               bundle(bundle)
         {
         }
 
         const SCREEN_ID eScreenId;
-        const REASON eReason;
         const CYIBundle bundle;
     };
 
@@ -34,7 +32,7 @@ public:
 
     void Start(SCREEN_ID eScreenId);
 
-    virtual void NavigateToScreen(SCREEN_ID eScreenId, REASON eReason, const CYIBundle &rBundle);
+    virtual void NavigateToScreen(SCREEN_ID eScreenId, const CYIBundle &rBundle);
     virtual void NavigateBack();
     bool IsScreenAvailable() const;
 
