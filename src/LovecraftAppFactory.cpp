@@ -1,6 +1,6 @@
 
 #include "AppFactory.h"
-#include "EmptySampleApp.h"
+#include "LovecraftApp.h"
 
 #define APP_NAME "Empty Sample"
 
@@ -15,7 +15,7 @@
 
 CYIApp *AppFactory::Create()
 {
-    return new EmptySampleApp();
+    return new LovecraftApp();
 }
 
 int AppFactory::GetWindowWidth()

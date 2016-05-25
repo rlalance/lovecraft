@@ -1,5 +1,4 @@
-﻿// © You i Labs Inc. 2000-2016. All rights reserved.
-#include "EmptySampleApp.h"
+﻿#include "LovecraftApp.h"
 
 #include "app/ApplicationConfiguration.h"
 #include "quest/QuestModel.h"
@@ -14,20 +13,17 @@
 #include <view/YiSceneView.h>
 #include "quest/QuestList.h"
 
-/*! \addtogroup empty-sample
-  @{
- */
-static const CYIString TAG = "EmptySampleApp";
+static const CYIString TAG = "LovecraftApp";
 
-EmptySampleApp::EmptySampleApp()
+LovecraftApp::LovecraftApp()
 {
 }
 
-EmptySampleApp::~EmptySampleApp()
+LovecraftApp::~LovecraftApp()
 {
 }
 
-bool EmptySampleApp::UserInit()
+bool LovecraftApp::UserInit()
 {
     SetupApplicationConfiguration();
 
@@ -38,7 +34,7 @@ bool EmptySampleApp::UserInit()
 
     if(!pSceneViewMain)
     {
-        YI_LOGE("EmptySampleApp::UserInit", "Loading scene has failed");
+        YI_LOGE("LovecraftApp::UserInit", "Loading scene has failed");
         return false;
     }
 
@@ -50,7 +46,7 @@ bool EmptySampleApp::UserInit()
     return true;
 }
 
-void EmptySampleApp::SetupApplicationConfiguration()
+void LovecraftApp::SetupApplicationConfiguration() const
 {
     ApplicationConfiguration & applicationConfiguration = ApplicationConfiguration::GetInstance();
 
@@ -65,7 +61,7 @@ void EmptySampleApp::SetupApplicationConfiguration()
     applicationConfiguration.RefreshAssetLoaderAssetRootLocator();
 }
 
-void EmptySampleApp::SetApplicationFormFactor(ApplicationConfiguration &applicationConfiguration) const
+void LovecraftApp::SetApplicationFormFactor(ApplicationConfiguration &applicationConfiguration) const
 {
     applicationConfiguration.SetFormFactor(FormFactorConfiguration::FORM_FACTOR_TABLET);
 
@@ -88,7 +84,7 @@ void EmptySampleApp::SetApplicationFormFactor(ApplicationConfiguration &applicat
     //}
 }
 
-void EmptySampleApp::SetApplicationPlatform(ApplicationConfiguration &applicationConfiguration) const
+void LovecraftApp::SetApplicationPlatform(ApplicationConfiguration &applicationConfiguration) const
 {
     CYIDeviceInformationBridge *pDeviceInformationBridge = CYIDeviceBridgeLocator::GetDeviceInformationBridge();
 
@@ -119,24 +115,19 @@ void EmptySampleApp::SetApplicationPlatform(ApplicationConfiguration &applicatio
     }
 }
 
-bool EmptySampleApp::UserStart()
+bool LovecraftApp::UserStart()
 {
     CYIString assetPath = CYIApp::GetAssetsPath();
     QuestList* quests = QuestList::FromJSON(assetPath + "resources/Quests.json");
 
-    YI_LOGI("EmptySampleApp::UserStart", "%s", quests->ToString().GetData());
+    YI_LOGI("LovecraftApp::UserStart", "%s", quests->ToString().GetData());
 
     delete quests;
 
     return m_pAppController->Start();
 }
 
-void EmptySampleApp::UserUpdate()
+void LovecraftApp::UserUpdate()
 {
     // This per-frame hook can be used to drive components of an application which rely on a time-step and are not managed by You.i Engine.
 }
-
-/*!
-@}
-*/
-
