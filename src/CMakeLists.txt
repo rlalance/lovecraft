@@ -11,21 +11,32 @@ macro(YiGetSubDirs result basedir)
     set(${result} ${dirlist})
 endmacro()
 
-set(YI_REL_PATH_TO_ROOT ../youiengine)
-set(YI_APP_BUILD_DIR ${PROJECT_SOURCE_DIR}/../build)
+set(YI_REL_PATH_TO_ROOT 
+    ../youiengine)
+
+set(YI_APP_BUILD_DIR 
+    ${PROJECT_SOURCE_DIR}/../build)
+
 set(YI_REL_SRC_DIR .)
+
+set(CMAKE_MODULE_PATH 
+    ${CMAKE_CURRENT_SOURCE_DIR}/${YI_REL_PATH_TO_ROOT}/cmake ${CMAKE_MODULE_PATH})
+
 set(YI_PROJECT_NAME Lovecraft)
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/${YI_REL_PATH_TO_ROOT}/cmake ${CMAKE_MODULE_PATH})
 
 project (${YI_PROJECT_NAME}) 
+
+set(YI_EXE_NAME ${YI_PROJECT_NAME})
 
 file(GLOB_RECURSE YI_SRC_FILES 
     "${YI_REL_SRC_DIR}/*.h"
     "${YI_REL_SRC_DIR}/*.cpp")
 
-set(YI_APP_COMMON_DIR ${YI_REL_PATH_TO_ROOT}/AppCommon)
+set(YI_APP_COMMON_DIR 
+    ${YI_REL_PATH_TO_ROOT}/AppCommon)
 
-set(YI_SRC_FILES_APPCOMMON ${YI_APP_COMMON_DIR}/WinMainDefault.cpp)
+set(YI_SRC_FILES_APPCOMMON 
+    ${YI_APP_COMMON_DIR}/WinMainDefault.cpp)
 
 set(YI_SRC_FILES
 	${YI_SRC_FILES}
@@ -69,7 +80,6 @@ foreach(dir ${YI_REL_INCLUDE_SUB_DIRS})
 	list(APPEND YI_HEADER_FILES_PUBLIC ${HEADERS} ${INLINED})
 endforeach()
 
-set(YI_EXE_NAME ${YI_PROJECT_NAME})
 
 # Adds a .vcxproj.user file which sets $(TargetDir) as the working directory for
 # the debugger. This needs to be set in order to debug an application in Visual Studio.
