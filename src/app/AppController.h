@@ -27,8 +27,6 @@ private:
     void ConfigInitStateExited();
     void RunningStateEntered();
     void RunningStateExited();
-    void NormalStateEntered();
-    void NormalStateExited();
 
     void ConfigInitToRunningTransitionStarted();
     void ConfigInitToRunningTransitionEnded();

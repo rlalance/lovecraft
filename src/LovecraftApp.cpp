@@ -1,17 +1,12 @@
 ﻿#include "LovecraftApp.h"
 
 #include "app/ApplicationConfiguration.h"
-#include "quest/QuestModel.h"
 
-#include <datamodel/YiAbstractDataModel.h>
-#include <framework/YiFramework.h>
-#include <logging/YiLogger.h>
-#include <platform/YiApplicationUIBridgeLocator.h>
+//#include <platform/YiApplicationUIBridgeLocator.h>
 #include <platform/YiDeviceBridgeLocator.h>
-#include <platform/YiSystemInformationBridgeLocator.h>
-#include <scenetree/YiSceneManager.h>
-#include <view/YiSceneView.h>
+#include "utilities/tmxparser.h"
 #include "quest/QuestList.h"
+//#include <platform/YiSystemInformationBridgeLocator.h>
 
 static const CYIString TAG = "LovecraftApp";
 
@@ -29,24 +24,12 @@ bool LovecraftApp::UserInit()
 
     m_pAppController = new AppController(*this);
 
-    // Load a layout file which will be the root scene view.
-    CYISceneView *pSceneViewMain = GetSceneManager()->LoadScene("MainNav_Main.layout", CYISceneManager::SCALE_STRETCH, CYISceneManager::V_ALIGN_CENTER, CYISceneManager::H_ALIGN_CENTER);
-
-    if(!pSceneViewMain)
-    {
-        YI_LOGE("LovecraftApp::UserInit", "Loading scene has failed");
-        return false;
-    }
-
-    pSceneViewMain->GetInTimeline()->StartForward();
-
-    // Add the scene view to the scene manager.
-    GetSceneManager()->AddScene("MainComp", pSceneViewMain, 0, CYISceneManager::LAYER_OPAQUE);
+    Tests();
 
     return true;
 }
 
-void LovecraftApp::SetupApplicationConfiguration() const
+void LovecraftApp::SetupApplicationConfiguration()
 {
     ApplicationConfiguration & applicationConfiguration = ApplicationConfiguration::GetInstance();
 
@@ -61,7 +44,7 @@ void LovecraftApp::SetupApplicationConfiguration() const
     applicationConfiguration.RefreshAssetLoaderAssetRootLocator();
 }
 
-void LovecraftApp::SetApplicationFormFactor(ApplicationConfiguration &applicationConfiguration) const
+void LovecraftApp::SetApplicationFormFactor(ApplicationConfiguration &applicationConfiguration)
 {
     applicationConfiguration.SetFormFactor(FormFactorConfiguration::FORM_FACTOR_TABLET);
 
@@ -84,7 +67,7 @@ void LovecraftApp::SetApplicationFormFactor(ApplicationConfiguration &applicatio
     //}
 }
 
-void LovecraftApp::SetApplicationPlatform(ApplicationConfiguration &applicationConfiguration) const
+void LovecraftApp::SetApplicationPlatform(ApplicationConfiguration &applicationConfiguration)
 {
     CYIDeviceInformationBridge *pDeviceInformationBridge = CYIDeviceBridgeLocator::GetDeviceInformationBridge();
 
@@ -117,17 +100,33 @@ void LovecraftApp::SetApplicationPlatform(ApplicationConfiguration &applicationC
 
 bool LovecraftApp::UserStart()
 {
-    CYIString assetPath = CYIApp::GetAssetsPath();
-    QuestList* quests = QuestList::FromJSON(assetPath + "resources/Quests.json");
-
-    YI_LOGI("LovecraftApp::UserStart", "%s", quests->ToString().GetData());
-
-    delete quests;
-
     return m_pAppController->Start();
 }
 
 void LovecraftApp::UserUpdate()
 {
     // This per-frame hook can be used to drive components of an application which rely on a time-step and are not managed by You.i Engine.
+}
+
+
+void LovecraftApp::Tests() const
+{
+    //TMX loading test
+    tmxparser::TmxReturn error;
+    tmxparser::TmxMap map;
+
+    // test from file
+    CYIString assetPath = GetAssetsPath();
+
+    CYIString levelPath = assetPath + "resources/" + "test_xml_level.tmx";
+
+    error = tmxparser::parseFromFile(levelPath.GetData(), &map, assetPath.GetData());
+
+    // Quest test
+    QuestList* quests = QuestList::FromJSON(assetPath + "resources/Quests.json");
+
+    YI_LOGI("LovecraftApp::UserStart", "%s", quests->ToString().GetData());
+
+    delete quests;
+    
 }

@@ -2,7 +2,7 @@
 
 //#include "player/PlayerScreenViewController.h"
 #include "screen/ScreenViewController.h"
-//#include "screen/CollectionScreenViewController.h"
+#include "screen/SplashScreenViewController.h"
 //#include "screen/ContentScreenViewController.h"
 //#include "screen/HomeLanderScreenViewController.h"
 //#include "screen/LoginScreenViewController.h"
@@ -12,6 +12,7 @@ ScreenViewController::ScreenViewController(NavigationInterface::SCREEN_ID eScree
     , m_navigationInterface(navigationController)
     , m_eScreenId(eScreenId)
     , m_name(CYIString("%1 (%2)").Arg(rName).Arg(CYIString::FromValue(this)))
+    , m_app(app)
 {
 
 }
@@ -33,19 +34,11 @@ const CYIString &ScreenViewController::GetScreenName() const
 
 ScreenViewController *ScreenViewController::Create(NavigationInterface::SCREEN_ID eScreenId, NavigationInterface &navigationController, CYIApp &app)
 {
-//    switch (eScreenId)
-//    {
-    //case NavigationInterface::COLLECTION:
-    //    return new CollectionScreenViewController(navigationController, app);
-//    case NavigationInterface::CONTENT:
-//        return new ScreenViewController(eScreenId, navigationController, app);
-    //case NavigationInterface::LANDER:
-    //    return new HomeLanderScreenViewController(navigationController, app);
-    //case NavigationInterface::PLAYER:
-    //    return new PlayerScreenViewController(navigationController, app);
-    //case NavigationInterface::LOGIN:
-    //    return new LoginScreenViewController(navigationController, app);
-//    }
+    switch (eScreenId)
+    {
+    case NavigationInterface::SPLASH:
+        return new SplashScreenViewController(navigationController, app);
+    }
 
     return YI_NULL;
 }

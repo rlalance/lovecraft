@@ -122,7 +122,12 @@ TabbedViewPageController *TabbedViewController::CreateNamedController(const CYIS
 {
     TabbedViewPageController *pController = YiRTTINew<TabbedViewPageController>(controllerName.GetData());
 
-    YI_ASSERT(pController, TAG, "Could not instantiate controller '%s'", controllerName.GetData());
+    if (pController == YI_NULL)
+    {
+        YI_LOGD(TAG, "Could not instantiate controller '%s'. The controller class will eventually need to be implemented. Subtituting with base class TabbedViewPageController. * Reminder: After Effects layer property is often used to set the controller.*", controllerName.GetData());
+
+        pController = new TabbedViewPageController();
+    }
 
     return pController;
 }

@@ -75,7 +75,7 @@ protected:
     /*!
         \details Reimplement to build a default view for the controller.
     */
-    virtual CYISceneView *BuildDefaultView(CYISceneManager *pSceneManager) = 0;
+    virtual CYISceneView *BuildDefaultView(CYISceneManager *pSceneManager);
 
     /*!
         \details Reimplement to handle initialization.

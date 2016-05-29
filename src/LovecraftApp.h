@@ -13,9 +13,9 @@ public:
     LovecraftApp();
     virtual ~LovecraftApp();
 
-    void SetupApplicationConfiguration() const;
-    void SetApplicationFormFactor(ApplicationConfiguration& applicationConfiguration) const;
-    void SetApplicationPlatform(ApplicationConfiguration& applicationConfiguration) const;
+    static void SetupApplicationConfiguration();
+    static void SetApplicationFormFactor(ApplicationConfiguration& applicationConfiguration);
+    static void SetApplicationPlatform(ApplicationConfiguration& applicationConfiguration);
     /*!
     \details Application set up and initialization occurs here. This sample minimally loads and displays an exported layout.
     */
@@ -30,7 +30,7 @@ public:
      \details Called on each frame before the update of the scene tree. This function may be used to drive other time-dependent components of an application which are not managed by You.i Engine. 
      */
     virtual void UserUpdate();
-
+    void Tests() const;
 private:
     CYIScopedPtr<AppController> m_pAppController;
 

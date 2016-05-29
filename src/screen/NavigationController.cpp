@@ -86,13 +86,8 @@ std::vector<CYIScreenTransitionManager::ScreenTransitionBundle> NavigationContro
 
     switch (pScreenViewController->GetScreenId())
     {
-    case LANDER:
-    case LOGIN:
-        break;
-    case COLLECTION:
-    case CONTENT:
-    case PLAYER:
-        screenHistory.push_back(TransitionBundleFor(CreateScreenViewController(LANDER)));
+    case SPLASH:
+        screenHistory.push_back(TransitionBundleFor(CreateScreenViewController(SPLASH)));
         break;
     }
 
@@ -114,22 +109,7 @@ bool NavigationController::OnBackButtonPressed()
     // Ignore backbutton request if NavigationController is not started yet.
     if (m_bIsStarted && !m_ScreenTransitionManager.PopScreen())
     {
-        ScreenViewController *pScreenViewController = static_cast<ScreenViewController *>(m_ScreenTransitionManager.PeekScreen());
-        if (pScreenViewController && pScreenViewController->GetScreenId() != LANDER)
-        {
-            if (pScreenViewController->GetScreenId() == LOGIN)
-            {
-                return false;
-            }
-            else
-            {
-                NavigationInterface::NavigateToScreen(LANDER);
-            }
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
     return true;
 }

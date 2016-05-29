@@ -10,26 +10,11 @@ class NavigationInterface : public CYISignalHandler
 public:
     enum SCREEN_ID
     {
-        COLLECTION,
-        CONTENT,
-        LANDER,
-        LOGIN,
-        PLAYER
-    };
-
-    enum REASON
-    {
-        NO_REASON,
-        DEEPLINK_REASON
+        SPLASH
     };
 
     static const CYIString ASSET_PACKAGE_BUNDLE_KEY;
-	static const CYIString AUTH_LEVEL_ID_BUNDLE_KEY;
-	static const CYIString BRANDING_CHANNEL_ID_BUNDLE_KEY;
-    static const CYIString PAGE_CONTAINER_BUNDLE_KEY;
     static const CYIString PAGE_BUNDLE_KEY;
-    static const CYIString RESOURCE_TYPE_BUNDLE_KEY;
-	static const CYIString SCREEN_CONTAINER_BUNDLE_KEY;
 
     NavigationInterface() {}
     virtual ~NavigationInterface() {}

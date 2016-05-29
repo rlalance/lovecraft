@@ -24,6 +24,16 @@ TabbedViewPageController::~TabbedViewPageController()
     std::for_each(m_bundleAugmentors.begin(), m_bundleAugmentors.end(), Utility::DefaultDelete());
 }
 
+CYISceneView *TabbedViewPageController::BuildDefaultView(CYISceneManager *pSceneManager)
+{
+    CYISceneView *pDefaultView = new CYISceneView();
+
+    pDefaultView->Init();
+
+    return pDefaultView;
+}
+
+
 bool TabbedViewPageController::IsPreloaded() const
 {
     return m_bIsPreloaded;

@@ -3,6 +3,7 @@
 
 #include "screen/NavigationInterface.h"
 
+#include <framework/YiApp.h>
 #include <screen/YiAbstractScreenViewController.h>
 
 class ScreenViewController : public CYIAbstractScreenViewController
@@ -19,6 +20,7 @@ protected:
     ScreenViewController(NavigationInterface::SCREEN_ID eScreenId, const CYIString &rName, NavigationInterface &rNavigationInterface, CYIApp &rApp);
 
     NavigationInterface &m_navigationInterface;
+    const CYIApp &m_app;
 
 private:
     const NavigationInterface::SCREEN_ID m_eScreenId;

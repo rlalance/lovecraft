@@ -58,6 +58,8 @@ bool AppController::HandleEvent(const CYISharedPtr<CYIEventDispatcher> &pDispatc
 void AppController::ConfigInitStateEntered()
 {
     YI_LOGD(TAG, "ConfigInitStateEntered");
+
+    TransitionFromConfigInitToRunning();
 }
 
 void AppController::ConfigInitStateExited()
@@ -68,6 +70,8 @@ void AppController::ConfigInitStateExited()
 void AppController::RunningStateEntered()
 {
     YI_LOGD(TAG, "RunningStateEntered");
+
+    m_NavigationController.Start(NavigationController::SPLASH);
 
     //if (UserDataModel::GetInstance().IsLoggedIn() || UserDataModel::GetInstance().GetLoginScreenSkipped())
     //{
@@ -82,16 +86,6 @@ void AppController::RunningStateEntered()
 void AppController::RunningStateExited()
 {
     YI_LOGD(TAG, "RunningStateExited");
-}
-
-void AppController::NormalStateEntered()
-{
-    YI_LOGD(TAG, "NormalStateEntered");
-}
-
-void AppController::NormalStateExited()
-{
-    YI_LOGD(TAG, "NormalStateExited");
 }
 
 void AppController::ConfigInitToRunningTransitionStarted()
