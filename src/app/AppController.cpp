@@ -13,7 +13,6 @@ AppController::AppController(CYIApp &rApp)
     , m_NavigationController(m_rApp)
 {
     BuildStateMachine();
-    ConnectSignals();
 }
 
 AppController::~AppController()
@@ -39,10 +38,6 @@ void AppController::BuildStateMachine()
     new CYISignalTransition<>(&TransitionFromConfigInitToRunning, pConfigInitState, pRunningState);
 
     m_StateMachine.SetInitialState(pConfigInitState);
-}
-
-void AppController::ConnectSignals()
-{
 }
 
 bool AppController::Start()
@@ -72,15 +67,6 @@ void AppController::RunningStateEntered()
     YI_LOGD(TAG, "RunningStateEntered");
 
     m_NavigationController.Start(NavigationController::SPLASH);
-
-    //if (UserDataModel::GetInstance().IsLoggedIn() || UserDataModel::GetInstance().GetLoginScreenSkipped())
-    //{
-    //    m_NavigationController.Start(NavigationController::LANDER);
-    //}
-    //else
-    //{
-    //    m_NavigationController.Start(NavigationController::LOGIN);
-    //}
 }
 
 void AppController::RunningStateExited()

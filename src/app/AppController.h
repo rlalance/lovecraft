@@ -19,9 +19,7 @@ public:
 
 private:
     void BuildStateMachine();
-    void ConnectSignals();
 
-    CYISignal<> TransitionFromConfigInitToRunning;
 
     void ConfigInitStateEntered();
     void ConfigInitStateExited();
@@ -34,6 +32,7 @@ private:
     CYIApp &m_rApp;
 
     CYIStateMachine m_StateMachine;
+    CYISignal<> TransitionFromConfigInitToRunning;
 
     NavigationController m_NavigationController;
 

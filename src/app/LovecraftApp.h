@@ -31,6 +31,7 @@ public:
      */
     virtual void UserUpdate();
     void Tests() const;
+
 private:
     CYIScopedPtr<AppController> m_pAppController;
 
