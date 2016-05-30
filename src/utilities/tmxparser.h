@@ -249,8 +249,9 @@ typedef struct
 typedef std::vector<TmxLayer> TmxLayerCollection_t;
 
 
-typedef struct
+class TmxMap
 {
+public:
 	std::string version;
 	TmxOrientation orientation;
 	unsigned int width;
@@ -264,7 +265,10 @@ typedef struct
 	TmxLayerCollection_t layerCollection;
 	TmxObjectGroupCollection_t objectGroupCollection;
 	TmxImageLayerCollection_t imageLayerCollection;
-} TmxMap;
+
+    //TODO
+    unsigned int GetApproximateSize() { return 1; };
+};
 
 
 

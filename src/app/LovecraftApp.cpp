@@ -1,12 +1,15 @@
 ﻿#include "LovecraftApp.h"
 
 #include "app/ApplicationConfiguration.h"
+#include "decoder/TMXDecoder.h"
+#include "quest/QuestList.h"
+#include "utilities/tmxparser.h"
 
 //#include <platform/YiApplicationUIBridgeLocator.h>
 #include <platform/YiDeviceBridgeLocator.h>
-#include "utilities/tmxparser.h"
-#include "quest/QuestList.h"
 //#include <platform/YiSystemInformationBridgeLocator.h>
+#include <asset/YiAssetLoader.h>
+#include <framework/YiFramework.h>
 
 static const CYIString TAG = "LovecraftApp";
 
@@ -26,7 +29,16 @@ bool LovecraftApp::UserInit()
 
     Tests();
 
+    AddTMXDecoder();
+
     return true;
+}
+
+void LovecraftApp::AddTMXDecoder()
+{
+    CYIAssetLoader *pAssetLoader = CYIFramework::GetInstance()->GetAssetLoader();
+
+    pAssetLoader->AddDecoder(new TMXDecoder());
 }
 
 void LovecraftApp::SetupApplicationConfiguration()

@@ -16,9 +16,10 @@ public:
     static void SetupApplicationConfiguration();
     static void SetApplicationFormFactor(ApplicationConfiguration& applicationConfiguration);
     static void SetApplicationPlatform(ApplicationConfiguration& applicationConfiguration);
+    void AddTMXDecoder();
     /*!
-    \details Application set up and initialization occurs here. This sample minimally loads and displays an exported layout.
-    */
+        \details Application set up and initialization occurs here. This sample minimally loads and displays an exported layout.
+        */
     virtual bool UserInit();
 
     /*!
