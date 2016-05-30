@@ -32,10 +32,8 @@ void AssetTMX::SetTMXMap(const CYISharedPtr<tmxparser::TmxMap> &map)
     m_pTMXMap = map;
 }
 
-void AssetTMX::SetTMXMap(tmxparser::TmxMap map)
+void AssetTMX::SetTMXMap(tmxparser::TmxMap *map)
 {
-    //TODO 
-    //m_pTMXMap = CYISharedPtr<tmxparser::TmxMap>(map);
-    m_pTMXMap = CYISharedPtr<tmxparser::TmxMap>(YI_NULL);
+    m_pTMXMap = CYISharedPtr<tmxparser::TmxMap>(map);
 }
 

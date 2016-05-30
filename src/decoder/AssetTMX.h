@@ -15,7 +15,7 @@ public:
 
     const CYISharedPtr<tmxparser::TmxMap> &GetTMXMap();
     void SetTMXMap(const CYISharedPtr<tmxparser::TmxMap> &map);
-    void SetTMXMap(tmxparser::TmxMap map);
+    void SetTMXMap(tmxparser::TmxMap *map);
 
 private:
     CYISharedPtr<tmxparser::TmxMap> m_pTMXMap;

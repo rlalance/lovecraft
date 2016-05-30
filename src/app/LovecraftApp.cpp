@@ -31,6 +31,10 @@ bool LovecraftApp::UserInit()
 
     AddTMXDecoder();
 
+    CYIAssetLoader *pAssetLoader = CYIFramework::GetInstance()->GetAssetLoader();
+
+    CYISharedPtr<CYIAsset> pAsset = pAssetLoader->Load(YiGetTypeId<AssetTMX>(), "drawable/default/test_xml_level.tmx", YI_NULL);
+
     return true;
 }
 

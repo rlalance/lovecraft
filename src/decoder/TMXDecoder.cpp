@@ -71,23 +71,28 @@ bool TMXDecoder::IsFormatSupported(const YI_UINT8 *pData, YI_UINT32 nDataSize)
     return false;
 }
 
-bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIString &path, const CYIAssetLoadParams *pDecodeParams)
+bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIString &path, const CYIAssetLoadParams *)
 {
-    YI_UNUSED(pDecodeParams);
+    bool bParsingSucceeded;
 
     tmxparser::TmxReturn error;
-    tmxparser::TmxMap map;
+    tmxparser::TmxMap *pMap = new tmxparser::TmxMap();
 
     // test from file
-    error = tmxparser::parseFromFile(path.GetData(), &map, "todo");
+    error = tmxparser::parseFromFile(path.GetData(), pMap, "");
 
     if (error == tmxparser::kSuccess)
     {
-        pAsset->SetTMXMap(map);
-        return true;
+        pAsset->SetTMXMap(pMap);
+        bParsingSucceeded = true;
+    }
+    else
+    {
+        delete pMap;
+        bParsingSucceeded = true;
     }
 
-    return false;
+    return bParsingSucceeded;
 }
 
 bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT8 *pData, YI_UINT32 nDataSize, const CYIAssetLoadParams *pDecodeParams)
