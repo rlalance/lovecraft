@@ -3,6 +3,12 @@
 #include "decoder/AssetTMX.h"
 #include "utilities/tmxparser.h"
 
+#include <asset/YiAssetManager.h>
+#include <asset/YiAssetTextureBase.h>
+#include <framework/YiFramework.h>
+#include <logging/YiLoggerCommon.h>
+#include <renderer/YiTextureFactory.h>
+
 static const CYIString LOG_TAG("TMXDecoder");
 
 YI_RTTI_DEF_INST(TMXDecoder, "TMXDecoder")
@@ -85,6 +91,8 @@ bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIStri
     {
         pAsset->SetTMXMap(pMap);
         bParsingSucceeded = true;
+
+        LoadTMXMapTilesetsAssets(pMap, path);
     }
     else
     {
@@ -95,12 +103,63 @@ bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIStri
     return bParsingSucceeded;
 }
 
+// TODO testing required for memory parsing
 bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT8 *pData, YI_UINT32 nDataSize, const CYIAssetLoadParams *pDecodeParams)
 {
-    YI_UNUSED(pAsset);
-    YI_UNUSED(pData);
-    YI_UNUSED(nDataSize);
-    YI_UNUSED(pDecodeParams);
+    bool bParsingSucceeded;
 
-    return false;
+    tmxparser::TmxReturn error;
+    tmxparser::TmxMap *pMap = new tmxparser::TmxMap();
+
+    // test from file
+    error = tmxparser::parseFromMemory((void*)pData, nDataSize, pMap, "");
+
+    if (error == tmxparser::kSuccess)
+    {
+        pAsset->SetTMXMap(pMap);
+        bParsingSucceeded = true;
+
+        LoadTMXMapTilesetsAssets(pMap, "memory");
+    }
+    else
+    {
+        delete pMap;
+        bParsingSucceeded = true;
+    }
+
+    return bParsingSucceeded;
 }
+
+void TMXDecoder::LoadTMXMapTilesetsAssets(const tmxparser::TmxMap* pMap, const CYIString &path)
+{
+    CYIAssetManager *pAM = CYIFramework::GetInstance()->GetAssetManager();
+
+    for (tmxparser::TmxTilesetCollection_t::const_iterator it = pMap->tilesetCollection.begin(); it != pMap->tilesetCollection.end(); ++it)
+    {
+        tmxparser::TmxImage tilesetImage = it->image;
+        CYIString timesetImageSource = tilesetImage.source;
+
+        CYISharedPtr<CYIAsset> pAsset = pAM->GetAsset(timesetImageSource);
+        CYISharedPtr<CYIAssetTextureBase> pAssetTextureBase = pAsset.DynamicCast<CYIAssetTextureBase>();
+
+        if (!pAssetTextureBase)
+        {
+            pAssetTextureBase = CYITextureFactory::CreateAsset(timesetImageSource);
+
+            if (pAssetTextureBase)
+            {
+                pAssetTextureBase->SetName(timesetImageSource);
+
+                if (!pAM->AddAsset(pAssetTextureBase))
+                {
+                    YI_LOGF(LOG_TAG, "Failed to add TMXMap [%s] tileset [%s] to asset management", path, timesetImageSource.GetData());
+                }
+            }
+            else
+            {
+                YI_LOGF(LOG_TAG, "Failed to create TMXMap [%s] tileset [%s] to asset management", path, timesetImageSource.GetData());
+            }
+        }
+    }
+}
+

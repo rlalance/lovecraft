@@ -16,6 +16,7 @@ public:
 
     bool PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIString& path, const CYIAssetLoadParams* pDecodeParams);
     bool PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT8* pData, YI_UINT32 nDataSize, const CYIAssetLoadParams* pDecodeParams);
+    void LoadTMXMapTilesetsAssets(const tmxparser::TmxMap* pMap, const CYIString &path);
 
     YI_TYPE_DATA
 };

@@ -172,8 +172,11 @@ TmxReturn parseFromMemory(void* data, size_t length, TmxMap* outMap, const std::
 
 TmxReturn _parseStart(tinyxml2::XMLElement* element, TmxMap* outMap, const std::string& tilesetPath)
 {
-	TmxReturn retVal = _parseMapNode(element, outMap);
-	return (retVal == TmxReturn::kSuccess) ? _parseEnd(outMap, tilesetPath) : retVal;
+    return _parseMapNode(element, outMap);
+
+    //Removed the part that inserts // or \\. our asset manager didn't like it :)
+    //TmxReturn retVal = _parseMapNode(element, outMap);
+    //return (retVal == TmxReturn::kSuccess) ? _parseEnd(outMap, tilesetPath) : retVal;
 }
 
 
