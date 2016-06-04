@@ -1,11 +1,18 @@
 #include "TMXView.h"
-#include <utilities/tmxparser.h>
+
+#include <asset/YiAssetLoader.h>
+#include <asset/YiAssetManager.h>
+#include <decoder/AssetTMX.h>
+#include <framework/YiFramework.h>
+#include <renderer/YiMaterial.h>
+#include <renderer/YiMeshFactory.h>
+#include <renderer/YiRenderSystem.h>
 
 YI_RTTI_DEF1_INST(TMXView, "TMXView", CYISceneView);
 
 static const CYIString TAG = "TMXView"; 
 
-TMXView::TMXView()
+TMXView::TMXView() : m_pAssetTMX(YI_NULL)
 {
 }
 
@@ -21,22 +28,38 @@ bool TMXView::Init()
     {
         SetFocusable(true);
 
-        LoadTMX();
+        CYIString assetFilename;
+        GetProperty("tmxFilename", &assetFilename);
+
+        if (assetFilename.IsEmpty())
+        {
+            assetFilename = "drawable/default/test_xml_level.tmx";
+        }
+        else
+        {
+            assetFilename = "drawable/default/" + assetFilename;
+        }
+
+        LoadTMXAsset(assetFilename);
     }
 
     return bInit;
 }
 
-bool TMXView::LoadTMX()
+bool TMXView::LoadTMXAsset(CYIString assetFilename)
 {
-    //tmxparser::TmxReturn error;
-    //tmxparser::TmxMap map;
+    m_pAssetTMX = CYIFramework::GetInstance()->GetAssetLoader()->Load(YiGetTypeId<AssetTMX>(), assetFilename, YI_NULL);
 
-    //// test from file
-    //CYIString assetPath = GetAssetsPath();
+    CYISharedPtr<CYIMesh> pMesh = CYIRenderSystem::GetInstance()->GetMeshFactory()->CreateQuadMesh(500.0f, 500.0f, true);
+    CYISharedPtr<CYIMaterial> pMaterial = CYISharedPtr<CYIMaterial>(new CYIMaterial);
 
-    //CYIString levelPath = assetPath + "resources/" + "test_xml_level.tmx";
+    CYIAssetManager *pAM = CYIFramework::GetInstance()->GetAssetManager();
+    CYISharedPtr<CYIAssetShaderProgram> pShaderAsset = pAM->GetAsset(CYIAssetManager::YI_PROGRAM_3D_RGB).DynamicCast<CYIAssetShaderProgram>();
+    pMaterial->SetShaderProgram(pShaderAsset);
+    pMaterial->SetTexture(0, m_pAssetTMX->GetTilesetTexture(0));
 
-    //error = tmxparser::parseFromFile(levelPath.GetData(), &map, assetPath.GetData());
-    return false;
+    SetMaterial(pMaterial);
+    SetMesh(pMesh);
+    
+    return m_pAssetTMX != YI_NULL;
 }

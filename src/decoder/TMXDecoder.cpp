@@ -77,7 +77,7 @@ bool TMXDecoder::IsFormatSupported(const YI_UINT8 *pData, YI_UINT32 nDataSize)
     return false;
 }
 
-bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIString &path, const CYIAssetLoadParams *)
+bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIString &path, const CYIAssetLoadParams *) const
 {
     bool bParsingSucceeded;
 
@@ -92,7 +92,7 @@ bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIStri
         pAsset->SetTMXMap(pMap);
         bParsingSucceeded = true;
 
-        LoadTMXMapTilesetsAssets(pMap, path);
+        LoadTMXMapTilesets(pAsset, pMap, path);
     }
     else
     {
@@ -104,7 +104,7 @@ bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIStri
 }
 
 // TODO testing required for memory parsing
-bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT8 *pData, YI_UINT32 nDataSize, const CYIAssetLoadParams *pDecodeParams)
+bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT8 *pData, YI_UINT32 nDataSize, const CYIAssetLoadParams *pDecodeParams) const
 {
     bool bParsingSucceeded;
 
@@ -119,7 +119,7 @@ bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT
         pAsset->SetTMXMap(pMap);
         bParsingSucceeded = true;
 
-        LoadTMXMapTilesetsAssets(pMap, "memory");
+        LoadTMXMapTilesets(pAsset, pMap, "memory");
     }
     else
     {
@@ -130,17 +130,19 @@ bool TMXDecoder::PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT
     return bParsingSucceeded;
 }
 
-void TMXDecoder::LoadTMXMapTilesetsAssets(const tmxparser::TmxMap* pMap, const CYIString &path)
+void TMXDecoder::LoadTMXMapTilesets(const CYISharedPtr<AssetTMX> &pAsset, const tmxparser::TmxMap* pMap, const CYIString &path) const
 {
     CYIAssetManager *pAM = CYIFramework::GetInstance()->GetAssetManager();
+
+    pAsset->RemoveTilesets();
 
     for (tmxparser::TmxTilesetCollection_t::const_iterator it = pMap->tilesetCollection.begin(); it != pMap->tilesetCollection.end(); ++it)
     {
         tmxparser::TmxImage tilesetImage = it->image;
         CYIString timesetImageSource = tilesetImage.source;
 
-        CYISharedPtr<CYIAsset> pAsset = pAM->GetAsset(timesetImageSource);
-        CYISharedPtr<CYIAssetTextureBase> pAssetTextureBase = pAsset.DynamicCast<CYIAssetTextureBase>();
+        CYISharedPtr<CYIAsset> pAssetTexture = pAM->GetAsset(timesetImageSource);
+        CYISharedPtr<CYIAssetTextureBase> pAssetTextureBase = pAssetTexture.DynamicCast<CYIAssetTextureBase>();
 
         if (!pAssetTextureBase)
         {
@@ -150,15 +152,23 @@ void TMXDecoder::LoadTMXMapTilesetsAssets(const tmxparser::TmxMap* pMap, const C
             {
                 pAssetTextureBase->SetName(timesetImageSource);
 
-                if (!pAM->AddAsset(pAssetTextureBase))
+                if (pAM->AddAsset(pAssetTextureBase))
                 {
-                    YI_LOGF(LOG_TAG, "Failed to add TMXMap [%s] tileset [%s] to asset management", path, timesetImageSource.GetData());
+                    pAsset->AddTilesetTexture(pAssetTextureBase);
+                }
+                else
+                {
+                    YI_LOGE(LOG_TAG, "Failed to add TMXMap [%s] tileset [%s] to asset management", path.GetData(), timesetImageSource.GetData());
                 }
             }
             else
             {
-                YI_LOGF(LOG_TAG, "Failed to create TMXMap [%s] tileset [%s] to asset management", path, timesetImageSource.GetData());
+                YI_LOGE(LOG_TAG, "Failed to create TMXMap [%s] tileset [%s] to asset management", path.GetData(), timesetImageSource.GetData());
             }
+        }
+        else
+        {
+            pAsset->AddTilesetTexture(pAssetTextureBase);
         }
     }
 }

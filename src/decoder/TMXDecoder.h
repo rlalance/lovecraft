@@ -14,9 +14,9 @@ public:
     bool DecodeAsset(const CYISharedPtr<CYIAsset>& pAsset);
     bool IsFormatSupported(const YI_UINT8* pData, YI_UINT32 nDataSize);
 
-    bool PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIString& path, const CYIAssetLoadParams* pDecodeParams);
-    bool PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT8* pData, YI_UINT32 nDataSize, const CYIAssetLoadParams* pDecodeParams);
-    void LoadTMXMapTilesetsAssets(const tmxparser::TmxMap* pMap, const CYIString &path);
+    bool PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const CYIString& path, const CYIAssetLoadParams* pDecodeParams) const;
+    bool PopulateTMX(const CYISharedPtr<AssetTMX> &pAsset, const YI_UINT8* pData, YI_UINT32 nDataSize, const CYIAssetLoadParams* pDecodeParams) const;
+    void LoadTMXMapTilesets(const CYISharedPtr<AssetTMX> &pAssetTMX, const tmxparser::TmxMap* pMap, const CYIString &path) const;
 
     YI_TYPE_DATA
 };

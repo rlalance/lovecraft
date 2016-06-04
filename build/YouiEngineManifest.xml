@@ -6,5 +6,6 @@
     <layout dir="tablet" filename="MainNav_Main.layout"/>
 	<drawable dir="default" filename="test_xml_level.tmx"/>
 	<drawable dir="default" filename="super_mario_one_tileset.png"/>
+	<drawable dir="default" filename="legend_of_zelda_one_overworld_tiles.png"/>
   </asset-bundle>
 </manifest>
