@@ -31,7 +31,8 @@ public:
      \details Called on each frame before the update of the scene tree. This function may be used to drive other time-dependent components of an application which are not managed by You.i Engine. 
      */
     virtual void UserUpdate();
-    void Tests() const;
+    void TestsQuests() const;
+    void TestLoadingTMX();
 
 private:
     CYIScopedPtr<AppController> m_pAppController;

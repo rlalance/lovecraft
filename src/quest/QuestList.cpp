@@ -23,8 +23,6 @@ QuestList* QuestList::FromJSON(CYIString path)
 
 QuestList* QuestList::FromJSON(yi::rapidjson::Document* document)
 {
-    CYIParsingError parsingError;
-
     yi::rapidjson::Value& questArray = (*document)["Quests"];
     YI_ASSERT(questArray.IsArray(), "QuestList::FromJSON", "Could not find quests array in JSON file.");
 

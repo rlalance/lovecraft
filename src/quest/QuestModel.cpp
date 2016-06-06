@@ -40,6 +40,11 @@ void QuestModel::AddObjective(QuestObjectiveModel* objective, YI_INT32 index)
     }
 }
 
+void QuestModel::AddPrecondition(CYIString precondition)
+{
+    m_preconditions.push_back(precondition);
+}
+
 QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
 {
     CYIParsingError parsingError;
@@ -54,6 +59,17 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
     YI_ASSERT(!parsingError.HasError(), "QuestModel::FromJSON", parsingError.GetParsingErrorMessage());
 
     QuestModel* newQuest = new QuestModel(questName, questDescription);
+
+    const yi::rapidjson::Value& preconditions = questJSONObject["Preconditions"];
+    YI_ASSERT(preconditions.IsArray(), "QuestList::FromJSON", "Could not find preconditions array in JSON file.");
+
+    for (yi::rapidjson::SizeType i = 0; i < preconditions.Size(); ++i)
+    {
+        const yi::rapidjson::Value& precondition = preconditions[i];
+
+        newQuest->AddPrecondition(CYIString(precondition.GetString()));
+    }
+
 
     const yi::rapidjson::Value& objectives = questJSONObject["Objectives"];
     YI_ASSERT(objectives.IsArray(), "QuestModel::FromJSON", "Could not find objectives array in JSON file.");
@@ -75,6 +91,18 @@ CYIString QuestModel::ToString()
     CYIString questInfo;
     questInfo.Append("QuestName: " + m_name + "\n");
     questInfo.Append("QuestDescription: " + m_description + "\n");
+
+    questInfo.Append("Preconditions: [");
+    for (YI_UINT32 i = 0; i < m_preconditions.size(); ++i)
+    {
+        questInfo.Append(std::to_string(i) + ": " + m_preconditions[i]);
+        
+        if(i < m_preconditions.size()-1)
+        {
+            questInfo.Append(",");
+        }
+    }
+    questInfo.Append("]\n");
 
     for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {

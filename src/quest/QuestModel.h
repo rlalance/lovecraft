@@ -16,12 +16,14 @@ public:
     void AddRowsToMatchIndex(YI_INT32 index);
     void AddObjective(QuestObjectiveModel* objective, YI_INT32 index);
 
+    void AddPrecondition(CYIString precondition);
     static QuestModel* FromJSON(const yi::rapidjson::Value& jsonObject);
 
     CYIString ToString();
 
 private:
     void Initialize(CYIString name, CYIString description);
+    std::vector<CYIString> m_preconditions;
 
     CYIString m_name;
     CYIString m_description;

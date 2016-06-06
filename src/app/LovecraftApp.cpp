@@ -10,6 +10,7 @@
 //#include <platform/YiSystemInformationBridgeLocator.h>
 #include <asset/YiAssetLoader.h>
 #include <framework/YiFramework.h>
+#include <quest/QuestManager.h>
 
 static const CYIString TAG = "LovecraftApp";
 
@@ -27,9 +28,11 @@ bool LovecraftApp::UserInit()
 
     m_pAppController = new AppController(*this);
 
-    Tests();
-
     AddTMXDecoder();
+
+    TestsQuests();
+
+    TestLoadingTMX();
 
     return true;
 }
@@ -121,7 +124,7 @@ void LovecraftApp::UserUpdate()
 }
 
 
-void LovecraftApp::Tests() const
+void LovecraftApp::TestsQuests() const
 {
     //TMX loading test
     tmxparser::TmxReturn error;
@@ -130,15 +133,24 @@ void LovecraftApp::Tests() const
     // test from file
     CYIString assetPath = GetAssetsPath();
 
+    CYIString questsPath = assetPath + "resources/" + "Quests.json";
     CYIString levelPath = assetPath + "resources/" + "test_xml_level.tmx";
 
     error = tmxparser::parseFromFile(levelPath.GetData(), &map, assetPath.GetData());
 
     // Quest test
-    QuestList* quests = QuestList::FromJSON(assetPath + "resources/Quests.json");
+    QuestManager* questManager = new QuestManager(questsPath);
+//    QuestList* quests = QuestList::FromJSON(questsPath);
 
-    YI_LOGI("LovecraftApp::UserStart", "%s", quests->ToString().GetData());
+//    YI_LOGI("LovecraftApp::UserStart", "%s", quests->ToString().GetData());
+    YI_LOGI("LovecraftApp::UserStart", "%s", questManager->AllQuestsToString().GetData());
 
-    delete quests;
-    
+    delete questManager;
+}
+
+void LovecraftApp::TestLoadingTMX()
+{
+    CYIAssetLoader *pAssetLoader = CYIFramework::GetInstance()->GetAssetLoader();
+
+    CYISharedPtr<CYIAsset> pAsset = pAssetLoader->Load(YiGetTypeId<AssetTMX>(), "drawable/default/test_xml_level.tmx", YI_NULL);
 }

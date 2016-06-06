@@ -3,6 +3,8 @@
     {
       "Name": "Rescue Operation",
       "Description": "Rescue VIPs and survivors scattered around the city of Prospect.",
+      "Preconditions": [
+      ],
       "Objectives": [
         {
           "Name": "Briefing",
@@ -137,6 +139,9 @@
     {
       "Name": "Investigation",
       "Description": "Find out who is responsible for the conflict.",
+      "Preconditions": [
+        "speak:handler:briefing"
+      ],
       "Objectives": [
         {
           "Name": "Ask the Prince for information.",
