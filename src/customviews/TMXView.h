@@ -5,6 +5,9 @@
 
 #include <view\YiSceneView.h>
 
+/*! 
+    TMXView is the parent of TMXLayerView's.
+*/
 class TMXView : public CYISceneView
 {
 public:
@@ -12,7 +15,7 @@ public:
     ~TMXView();
 
     virtual bool Init();
-    bool LoadTMXAsset(CYIString assetFilename);
+    CYISharedPtr<AssetTMX> LoadTMXAsset(CYIString assetFilename);
 
 private:
     CYISharedPtr<AssetTMX> m_pAssetTMX;

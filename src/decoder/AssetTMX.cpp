@@ -17,7 +17,7 @@ AssetTMX::~AssetTMX()
 {
 }
 
-const CYISharedPtr<tmxparser::TmxMap> &AssetTMX::GetTMXMap()
+CYISharedPtr<tmxparser::TmxMap> AssetTMX::GetTMXMap()
 {
     if (!IsLoaded())
     {

@@ -30,7 +30,7 @@ bool LovecraftApp::UserInit()
 
     AddTMXDecoder();
 
-    TestsQuests();
+    //TestsQuests();
 
     //TestLoadingTMX();
 

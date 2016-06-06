@@ -14,7 +14,7 @@ public:
     AssetTMX(const CYIString& path, PATH_TYPE ePathType);
     ~AssetTMX();
 
-    const CYISharedPtr<tmxparser::TmxMap> &GetTMXMap();
+    CYISharedPtr<tmxparser::TmxMap> GetTMXMap();
     void SetTMXMap(const CYISharedPtr<tmxparser::TmxMap> &map);
     void SetTMXMap(tmxparser::TmxMap *map);
     YI_UINT32 GetTilesetCount() const;

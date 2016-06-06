@@ -1,5 +1,7 @@
 #include "TMXView.h"
 
+#include "customviews/TMXLayerView.h"
+
 #include <asset/YiAssetLoader.h>
 #include <asset/YiAssetManager.h>
 #include <decoder/AssetTMX.h>
@@ -40,26 +42,31 @@ bool TMXView::Init()
             assetFilename = "drawable/default/" + assetFilename;
         }
 
-        LoadTMXAsset(assetFilename);
+        m_pAssetTMX = LoadTMXAsset(assetFilename);
+
+        CYISharedPtr<tmxparser::TmxMap> m_pTMXMap = m_pAssetTMX->GetTMXMap();
+        tmxparser::TmxLayerCollection_t &layerCollection = m_pTMXMap->layerCollection;
+
+        for (YI_UINT32 layerIndex = 0; layerIndex < layerCollection.size(); layerIndex++)
+        {
+            tmxparser::TmxLayer &tmxLayer = layerCollection[layerIndex];
+
+            //TODO put this back in when ready
+            //TMXLayerView *pTmxLayerView = new TMXLayerView();
+            //pTmxLayerView->Init();
+            //pTmxLayerView->Create(m_pTMXMap, tmxLayer);
+            //AddChild(pTmxLayerView);
+        }
     }
 
     return bInit;
 }
 
-bool TMXView::LoadTMXAsset(CYIString assetFilename)
+CYISharedPtr<AssetTMX> TMXView::LoadTMXAsset(CYIString assetFilename)
 {
-    m_pAssetTMX = CYIFramework::GetInstance()->GetAssetLoader()->Load(YiGetTypeId<AssetTMX>(), assetFilename, YI_NULL);
+    CYISharedPtr<AssetTMX> pAssetTMX;
 
-    CYISharedPtr<CYIMesh> pMesh = CYIRenderSystem::GetInstance()->GetMeshFactory()->CreateQuadMesh(500.0f, 500.0f, true);
-    CYISharedPtr<CYIMaterial> pMaterial = CYISharedPtr<CYIMaterial>(new CYIMaterial);
+    pAssetTMX = CYIFramework::GetInstance()->GetAssetLoader()->Load(YiGetTypeId<AssetTMX>(), assetFilename, YI_NULL);
 
-    CYIAssetManager *pAM = CYIFramework::GetInstance()->GetAssetManager();
-    CYISharedPtr<CYIAssetShaderProgram> pShaderAsset = pAM->GetAsset(CYIAssetManager::YI_PROGRAM_3D_RGB).DynamicCast<CYIAssetShaderProgram>();
-    pMaterial->SetShaderProgram(pShaderAsset);
-    pMaterial->SetTexture(0, m_pAssetTMX->GetTilesetTexture(0));
-
-    SetMaterial(pMaterial);
-    SetMesh(pMesh);
-    
-    return m_pAssetTMX != YI_NULL;
+    return pAssetTMX;
 }
