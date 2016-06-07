@@ -148,9 +148,8 @@ void LovecraftApp::TestLoadingTMX()
 {
     CYIAssetLoader *pAssetLoader = CYIFramework::GetInstance()->GetAssetLoader();
 
-    CYISharedPtr<CYIAsset> pAsset = pAssetLoader->Load(YiGetTypeId<AssetTMX>(), "drawable/default/test_xml_level.tmx", YI_NULL);
+    CYISharedPtr<CYIAsset> pAsset = pAssetLoader->Load(YiGetTypeId<AssetTMX>(), "drawable/default/lvl01s.tmx", YI_NULL);
 }
-
 void LovecraftApp::TestQuestProgression(QuestManager* quest_manager)
 {
     YI_LOGI("LovecraftApp::TestQuestProgression", "ToString: \n%s", quest_manager->AllQuestsToString().GetData());

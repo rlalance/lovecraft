@@ -7,5 +7,6 @@
 	<drawable dir="default" filename="test_xml_level.tmx"/>
 	<drawable dir="default" filename="super_mario_one_tileset.png"/>
 	<drawable dir="default" filename="legend_of_zelda_one_overworld_tiles.png"/>
+	<drawable dir="default" filename="t01s.png"/>
   </asset-bundle>
 </manifest>

@@ -6,7 +6,7 @@
 #include <view\YiSceneView.h>
 
 /*! 
-    TMXView is the parent of TMXLayerView's.
+    TMXView is the parent of TMXLayerNode's.
 */
 class TMXView : public CYISceneView
 {

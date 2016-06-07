@@ -41,7 +41,7 @@ YI_UINT32 AssetTMX::GetTilesetCount() const
 {
     if (m_pTMXMap)
     {
-        return m_pTMXMap->tilesetCollection.size();
+        return m_pTMXMap->tilesetList.size();
     }
 
     return 0;
@@ -49,7 +49,7 @@ YI_UINT32 AssetTMX::GetTilesetCount() const
 
 CYISharedPtr<CYIAssetTextureBase> AssetTMX::GetTilesetTexture(YI_UINT32 tilesetIndex)
 {
-    if (tilesetIndex < m_pTMXMap->tilesetCollection.size())
+    if (tilesetIndex < m_pTMXMap->tilesetList.size())
     {
         return m_pTilesetsTextures[tilesetIndex];
     }

@@ -136,7 +136,7 @@ void TMXDecoder::LoadTMXMapTilesets(const CYISharedPtr<AssetTMX> &pAsset, const 
 
     pAsset->RemoveTilesets();
 
-    for (tmxparser::TmxTilesetCollection_t::const_iterator it = pMap->tilesetCollection.begin(); it != pMap->tilesetCollection.end(); ++it)
+    for (tmxparser::TmxTilesetList::const_iterator it = pMap->tilesetList.begin(); it != pMap->tilesetList.end(); ++it)
     {
         tmxparser::TmxImage tilesetImage = it->image;
         CYIString timesetImageSource = tilesetImage.source;

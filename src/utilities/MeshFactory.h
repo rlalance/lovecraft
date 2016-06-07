@@ -1,5 +1,6 @@
 #ifndef MESHFACTORY_H
 #define MESHFACTORY_H
+
 #include <renderer/YiMesh.h>
 
 class MeshFactory

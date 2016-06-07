@@ -1,6 +1,6 @@
 #include "TMXView.h"
 
-#include "customviews/TMXLayerView.h"
+#include "customviews/TMXLayerNode.h"
 
 #include <asset/YiAssetLoader.h>
 #include <asset/YiAssetManager.h>
@@ -33,6 +33,8 @@ bool TMXView::Init()
         CYIString assetFilename;
         GetProperty("tmxFilename", &assetFilename);
 
+        assetFilename = "lvl01s.tmx";
+
         if (assetFilename.IsEmpty())
         {
             assetFilename = "drawable/default/test_xml_level.tmx";
@@ -45,17 +47,19 @@ bool TMXView::Init()
         m_pAssetTMX = LoadTMXAsset(assetFilename);
 
         CYISharedPtr<tmxparser::TmxMap> m_pTMXMap = m_pAssetTMX->GetTMXMap();
-        tmxparser::TmxLayerCollection_t &layerCollection = m_pTMXMap->layerCollection;
+        tmxparser::TmxLayerList &layerCollection = m_pTMXMap->layerList;
 
-        for (YI_UINT32 layerIndex = 0; layerIndex < layerCollection.size(); layerIndex++)
+        for (YI_UINT32 layerIndex = 0; layerIndex < 1; layerIndex++)
+        //for (YI_UINT32 layerIndex = 0; layerIndex < layerCollection.size(); layerIndex++)
         {
             tmxparser::TmxLayer &tmxLayer = layerCollection[layerIndex];
 
-            //TODO put this back in when ready
-            //TMXLayerView *pTmxLayerView = new TMXLayerView();
-            //pTmxLayerView->Init();
-            //pTmxLayerView->Create(m_pTMXMap, tmxLayer);
-            //AddChild(pTmxLayerView);
+            TMXLayerNode *pTMXLayerNode = new TMXLayerNode();
+            pTMXLayerNode->SetSceneManager(GetSceneManager());
+
+            pTMXLayerNode->Init();
+            pTMXLayerNode->Create(m_pTMXMap, tmxLayer, m_pAssetTMX->GetTilesetTexture(0));
+            AddChild(pTMXLayerNode);
         }
     }
 
