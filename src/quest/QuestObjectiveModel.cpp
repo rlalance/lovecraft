@@ -42,6 +42,41 @@ void QuestObjectiveModel::AddResolution(QuestObjectiveResolution* resolution, YI
     }
 }
 
+void QuestObjectiveModel::Trigger(CYIString condition)
+{
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+
+            resolution.Get()->FullfillCondition(condition);
+        }
+    }
+}
+
+CYIString QuestObjectiveModel::GetDisplayText()
+{
+    CYIString displayText;
+    displayText.Append("ObjectiveName: " + m_name + "\n");
+
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+
+            //Here I must find the relevant resolution (or unresolved) text.
+        }
+    }
+
+    return displayText;
+}
+
 QuestObjectiveModel* QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& objectiveJSONObject)
 {
     CYIParsingError parsingError;

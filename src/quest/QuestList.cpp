@@ -60,6 +60,43 @@ void QuestList::AddQuest(QuestModel* quest, YI_INT32 index)
     }
 }
 
+void QuestList::Trigger(CYIString condition)
+{
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestModel> quest = data.Get<CYISharedPtr<QuestModel>>();
+
+            quest.Get()->Trigger(condition);
+        }
+    }
+}
+
+CYIString QuestList::GetDisplayText()
+{
+    CYIString displayText;
+
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestModel> quest = data.Get<CYISharedPtr<QuestModel>>();
+
+            if (quest.Get()->PreconditionsFullfilled())
+            {
+                displayText.Append(quest.Get()->GetDisplayText() + "\n");
+            }
+        }
+    }
+
+    return displayText;
+}
+
 CYIString QuestList::ToString()
 {
     CYIString questListInfo;

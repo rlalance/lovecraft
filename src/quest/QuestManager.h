@@ -9,7 +9,11 @@ public:
     QuestManager(CYIString questFilePath);
     ~QuestManager();
 
+    void Trigger(CYIString condition);
+
     CYIString AllQuestsToString() const;
+    CYIString GetAllQuestsDisplayText() const;
+
 private:
     QuestList *m_pQuests;
 

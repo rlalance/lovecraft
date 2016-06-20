@@ -3,21 +3,26 @@
 
 #include <rapidjson/document.h>
 #include <utility/YiString.h>
+#include "Condition.h"
 
 class QuestObjectiveResolution
 {
 public:
-    QuestObjectiveResolution(CYIString description, CYIString condition);
+    QuestObjectiveResolution(CYIString description);
     ~QuestObjectiveResolution();
 
     static QuestObjectiveResolution* FromJSON(const yi::rapidjson::Value& resolutionJSONObject);
 
-    CYIString ToString();
+    std::vector<Condition>*  GetConditions() const;
+    bool IsFulfilled() const;
+
+    void FullfillCondition(CYIString condition);
+
+    CYIString ToString() const;
 
 private:
     CYIString m_description;
-    CYIString m_condition;
-    bool m_bConditionFullfilled = false;
+    std::vector<Condition>* m_conditions;
 };
 
 #endif

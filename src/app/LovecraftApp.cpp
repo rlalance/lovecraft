@@ -140,10 +140,14 @@ void LovecraftApp::TestsQuests() const
 
     // Quest test
     QuestManager* questManager = new QuestManager(questsPath);
-//    QuestList* quests = QuestList::FromJSON(questsPath);
+    YI_LOGI("LovecraftApp::UserStart", "%s", questManager->AllQuestsToString().GetData());
+
+    YI_LOGI("LovecraftApp::UserStart", "%s", questManager->GetAllQuestsDisplayText().GetData());
+
+    questManager->Trigger(CYIString("speak:handler:briefing"));
+    YI_LOGI("LovecraftApp::UserStart", "%s", questManager->AllQuestsToString().GetData());
 
 //    YI_LOGI("LovecraftApp::UserStart", "%s", quests->ToString().GetData());
-    YI_LOGI("LovecraftApp::UserStart", "%s", questManager->AllQuestsToString().GetData());
 
     delete questManager;
 }

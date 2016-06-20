@@ -18,6 +18,17 @@ QuestModel::~QuestModel()
 {
 }
 
+bool QuestModel::PreconditionsFulfilled() const
+{
+    bool fulfilled = false;
+    for (CYISharedPtr<Condition> precondition : m_preconditions)
+    {
+        fulfilled = fulfilled && precondition->IsFulfilled();
+    }
+
+    return fulfilled;
+}
+
 void QuestModel::AddRowsToMatchIndex(YI_INT32 index)
 {
     YI_INT32 n_row = GetRowCount();
@@ -40,9 +51,9 @@ void QuestModel::AddObjective(QuestObjectiveModel* objective, YI_INT32 index)
     }
 }
 
-void QuestModel::AddPrecondition(CYIString precondition)
+void QuestModel::AddPrecondition(Condition* precondition)
 {
-    m_preconditions.push_back(precondition);
+    m_preconditions.push_back(CYISharedPtr<Condition>(precondition));
 }
 
 QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
@@ -67,7 +78,7 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
     {
         const yi::rapidjson::Value& precondition = preconditions[i];
 
-        newQuest->AddPrecondition(CYIString(precondition.GetString()));
+        newQuest->AddPrecondition(new Condition(precondition.GetString()));
     }
 
 
@@ -84,7 +95,42 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
     return newQuest;
 }
 
-yi::rapidjson::Document* ToJSON();
+void QuestModel::Trigger(CYIString condition)
+{
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestObjectiveModel> objective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
+            
+            objective.Get()->Trigger(condition);
+        }
+    }
+}
+
+CYIString QuestModel::GetDisplayText()
+{
+    CYIString displayText;
+
+    displayText.Append("QuestName: " + m_name + "\n");
+    displayText.Append("QuestDescription: " + m_description + "\n");
+
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestObjectiveModel> objective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
+
+            displayText.Append(objective.Get()->GetDisplayText() + "\n");
+        }
+    }
+
+    return displayText;
+}
 
 CYIString QuestModel::ToString()
 {
@@ -95,7 +141,7 @@ CYIString QuestModel::ToString()
     questInfo.Append("Preconditions: [");
     for (YI_UINT32 i = 0; i < m_preconditions.size(); ++i)
     {
-        questInfo.Append(std::to_string(i) + ": " + m_preconditions[i]);
+        questInfo.Append(std::to_string(i) + ": " + m_preconditions[i]->ToString());
         
         if(i < m_preconditions.size()-1)
         {
