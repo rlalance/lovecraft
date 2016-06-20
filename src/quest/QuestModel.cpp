@@ -81,7 +81,6 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
         newQuest->AddPrecondition(new Condition(precondition.GetString()));
     }
 
-
     const yi::rapidjson::Value& objectives = questJSONObject["Objectives"];
     YI_ASSERT(objectives.IsArray(), "QuestModel::FromJSON", "Could not find objectives array in JSON file.");
 

@@ -10,7 +10,6 @@ QuestObjectiveResolution::QuestObjectiveResolution(CYIString description)
 
 QuestObjectiveResolution::~QuestObjectiveResolution()
 {
-    delete m_conditions;
 }
 
 QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson::Value& resolutionJSONObject)
@@ -18,39 +17,44 @@ QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson
     CYIParsingError parsingError;
 
     CYIString description;
-    CYIString condition;
 
     CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Description", description, parsingError);
     YI_ASSERT(!parsingError.HasError(), "QuestObjectiveResolution::FromJSON", parsingError.GetParsingErrorMessage());
 
-    CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Resolution_Condition", condition, parsingError);
-    YI_ASSERT(!parsingError.HasError(), "QuestObjectiveResolution::FromJSON", parsingError.GetParsingErrorMessage());
+    QuestObjectiveResolution* quest_objective_resolution = new QuestObjectiveResolution(description);
 
-    return new QuestObjectiveResolution(description);
-}
+    const yi::rapidjson::Value& conditions = resolutionJSONObject["Conditions"];
+    YI_ASSERT(conditions.IsArray(), "QuestList::FromJSON", "Could not find conditions array in JSON file.");
 
-std::vector<Condition>* QuestObjectiveResolution::GetConditions() const
-{
-    return m_conditions;
+    for (yi::rapidjson::SizeType i = 0; i < conditions.Size(); ++i)
+    {
+        const yi::rapidjson::Value& condition = conditions[i];
+
+        quest_objective_resolution->AddCondition(new Condition(condition.GetString()));
+    }
+
+    return quest_objective_resolution;
 }
 
 bool QuestObjectiveResolution::IsFulfilled() const
 {
     bool fulfilled = false;
-
-    for (int i = 0; i < m_conditions->size(); ++i)
+    for (CYISharedPtr<Condition> condition : m_conditions)
     {
-        Condition condition = m_conditions;
-        fulfilled = fulfilled && condition.IsFulfilled();
+        fulfilled = fulfilled && condition->IsFulfilled();
     }
 
+    return fulfilled;
 }
 
 void QuestObjectiveResolution::FullfillCondition(CYIString condition)
 {
-    if (m_condition == condition)
+    for (CYISharedPtr<Condition> p_condition : m_conditions)
     {
-        m_bConditionFullfilled = true;
+        if (p_condition->GetCondition() == condition)
+        {
+            p_condition->Trigger();
+        }
     }
 }
 
@@ -58,8 +62,24 @@ CYIString QuestObjectiveResolution::ToString() const
 {
     CYIString resolutionInfo;
 
-    resolutionInfo.Append(m_description + " (" + m_condition + ")");
+    resolutionInfo.Append(m_description + "\n");
+
+    resolutionInfo.Append("Preconditions: [");
+    for (YI_UINT32 i = 0; i < m_conditions.size(); ++i)
+    {
+        resolutionInfo.Append(std::to_string(i) + ": " + m_conditions[i]->ToString());
+
+        if (i < m_conditions.size() - 1)
+        {
+            resolutionInfo.Append(",");
+        }
+    }
+    resolutionInfo.Append("]\n");
 
     return resolutionInfo;
 }
 
+void QuestObjectiveResolution::AddCondition(Condition* condition)
+{
+    m_conditions.push_back(CYISharedPtr<Condition>(condition));
+}

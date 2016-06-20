@@ -2,6 +2,7 @@
 #define CONDITION_H
 
 #include <utility/YiString.h>
+#include <rapidjson/document.h>
 
 class Condition
 {

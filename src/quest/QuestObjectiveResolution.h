@@ -4,6 +4,7 @@
 #include <rapidjson/document.h>
 #include <utility/YiString.h>
 #include "Condition.h"
+#include <smartptr/YiSharedPtr.h>
 
 class QuestObjectiveResolution
 {
@@ -13,7 +14,6 @@ public:
 
     static QuestObjectiveResolution* FromJSON(const yi::rapidjson::Value& resolutionJSONObject);
 
-    std::vector<Condition>*  GetConditions() const;
     bool IsFulfilled() const;
 
     void FullfillCondition(CYIString condition);
@@ -21,8 +21,10 @@ public:
     CYIString ToString() const;
 
 private:
+    void AddCondition(Condition* condition);
+
     CYIString m_description;
-    std::vector<Condition>* m_conditions;
+    std::vector<CYISharedPtr<Condition>> m_conditions;
 };
 
 #endif

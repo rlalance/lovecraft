@@ -27,10 +27,10 @@ CYIString QuestManager::GetAllQuestsDisplayText() const
 
 void QuestManager::Initialize(CYIString path)
 {
-    LoadQuestsFromFile(path);
+    LoadQuestsFromJSON(path);
 }
 
-void QuestManager::LoadQuestsFromFile(CYIString path)
+void QuestManager::LoadQuestsFromJSON(CYIString path)
 {
     m_pQuests = QuestList::FromJSON(path);
 }

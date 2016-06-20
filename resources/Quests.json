@@ -11,11 +11,11 @@
           "Resolutions": [
             {
               "Description": "Speak to the mission handler.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "Spoke to the mission handler and received instructions.",
-              "Resolution_Condition": "speak:handler:briefing"
+              "Conditions":["speak:handler:briefing"]
             }
           ]
         },
@@ -24,20 +24,23 @@
           "Resolutions": [
             {
               "Description": "Equipment was stored by a fellow agent in a store with an orange roof.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "Took a strange crystal and some supplies.",
-              "Resolution_Condition": "pickup:weapon:shard_shockfield"
+              "Conditions":["pickup:weapon:shard_shockfield",
+                            "pickup:item:healthkit"]
             },
             {
               "Description": "Took a handgun and some supplies.",
-              "Resolution_Condition": "pickup:weapon:handgun"
+              "Conditions":["pickup:weapon:handgun",
+                            "pickup:item:healthkit"]
             },
             {
               "Description": "Took a tazer and some supplies.",
-              "Resolution_Condition": "pickup:weapon:tazer"
-            }
+              "Conditions":["pickup:weapon:tazer",
+                            "pickup:item:healthkit"]
+              }
           ]
         },
         {
@@ -58,11 +61,11 @@
           "Resolutions": [
             {
               "Description": "I need to find the security central of the Prison and make sure the place is safe.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "There seems to be no danger in the Prison.",
-              "Resolution_Condition": "use:interactable:prison_computer"
+              "Conditions":["use:interactable:prison_computer"]
             }
           ]
         },
@@ -71,15 +74,15 @@
           "Resolutions": [
             {
               "Description": "The Prince should be holed up in his Palace. Given the possibility of looters, it would be best to send him to the Prison.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "The Prince has died...",
-              "Resolution_Condition": "state:prince:dead"
+              "Conditions":["state:prince:dead"]
             },
             {
               "Description": "The Prince has reached the Prison and is safe and sound.",
-              "Resolution_Condition": "rescue:maincharacter:prince"
+              "Conditions":["rescue:maincharacter:prince"]              
             }
           ]
         },
@@ -88,15 +91,15 @@
           "Resolutions": [
             {
               "Description": "The Prince's most trusted advisor should be in a governmental building in the downtown area.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "The Chief Advisor has died...",
-              "Resolution_Condition": "state:chief_advisor:dead"
+              "Conditions":["state:chief_advisor:dead"]              
             },
             {
               "Description": "The Chief Advisor has reached the Prison and is safe and sound.",
-              "Resolution_Condition": "rescue:maincharacter:chiefadvisor"
+              "Conditions":["rescue:maincharacter:chiefadvisor"]
             }
           ]
         },
@@ -105,19 +108,19 @@
           "Resolutions": [
             {
               "Description": "The Head Scientist is in charge of the science facility on top of the mountain.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "The Head Scientist has died...",
-              "Resolution_Condition": "state:head_scientist:dead"
+              "Conditions":["state:head_scientist:dead"]
             },
             {
               "Description": "The Head Scientist has begun transcending, and refused to go to the Prison.",
-              "Resolution_Condition": "state:head_scientist:transcended"
+              "Conditions":["state:head_scientist:transcended"]              
             },
             {
               "Description": "The Head Scientist has reached the Prison and is safe and sound.",
-              "Resolution_Condition": "rescue:maincharacter:prince"
+              "Conditions":["rescue:maincharacter:prince"]
             }
           ]
         },
@@ -126,11 +129,11 @@
           "Resolutions": [
             {
               "Description": "The agent who gathered supplies for me has been trapped in the slums, in an apartment building.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "The agent has been rescued and sent to the Prison.",
-              "Resolution_Condition": "rescue:maincharacter:fellowagent"
+              "Conditions":["rescue:maincharacter:fellowagent"]              
             }
           ]
         }
@@ -148,15 +151,15 @@
           "Resolutions": [
             {
               "Description": "Ask the Prince about the belligerents of the conflict.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "The Prince is dead, so I must speak to the Chief Advisor.",
-              "Resolution_Condition": "state:prince:dead"
+              "Conditions":["state:prince:dead"]
             },
             {
               "Description": "The Prince said that before the two independent scientific factions intervened, there had been reports of a private military corporation attacking, as well as some malformed creatures appearing around the outskirts.",
-              "Resolution_Condition": "speak:prince:conflict"
+              "Conditions":["speak:prince:conflict"]
             }
           ]
         },
@@ -165,15 +168,15 @@
           "Resolutions": [
             {
               "Description": "Ask the Chief Advisor about the belligerents of the conflict.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "The Chief Advisor is dead. The trail goes cold.",
-              "Resolution_Condition": "state:chief_advisor:dead"
+              "Conditions":["state:chief_advisor:dead"]
             },
             {
-              "Description": "The Chief Advisor tried dealing with the two scientific factions. He asked them for help with dealing with the strange creatures that were then roaming in the city. The private military corporation had already begun attacking other cities, so the country could not afford to fight an interal threat as well.",
-              "Resolution_Condition": "speak:chief_advisor:conflict"
+              "Description": "The Chief Advisor tried dealing with the two scientific factions.He asked them for help with dealing with the strange creatures that were then roaming in the city. The private military corporation had already begun attacking other cities, so the country could not afford to fight an interal threat as well.",
+              "Conditions":["speak:chief_advisor:conflict"]
             }
           ]
         }

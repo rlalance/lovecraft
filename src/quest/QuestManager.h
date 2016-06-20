@@ -18,7 +18,7 @@ private:
     QuestList *m_pQuests;
 
     void Initialize(CYIString path);
-    void LoadQuestsFromFile(CYIString path);
+    void LoadQuestsFromJSON(CYIString path);
 };
 
 #endif
