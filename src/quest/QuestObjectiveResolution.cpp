@@ -5,7 +5,7 @@
 QuestObjectiveResolution::QuestObjectiveResolution(CYIString description)
 {
     m_description = description;
-    m_conditions = new std::vector<Condition>();
+    m_conditions = std::vector<CYISharedPtr<Condition>>();
 }
 
 QuestObjectiveResolution::~QuestObjectiveResolution()
@@ -15,7 +15,6 @@ QuestObjectiveResolution::~QuestObjectiveResolution()
 QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson::Value& resolutionJSONObject)
 {
     CYIParsingError parsingError;
-
     CYIString description;
 
     CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Description", description, parsingError);
@@ -64,14 +63,14 @@ CYIString QuestObjectiveResolution::ToString() const
 
     resolutionInfo.Append(m_description + "\n");
 
-    resolutionInfo.Append("Preconditions: [");
+    resolutionInfo.Append("Conditions: [");
     for (YI_UINT32 i = 0; i < m_conditions.size(); ++i)
     {
         resolutionInfo.Append(std::to_string(i) + ": " + m_conditions[i]->ToString());
 
         if (i < m_conditions.size() - 1)
         {
-            resolutionInfo.Append(",");
+            resolutionInfo.Append(", ");
         }
     }
     resolutionInfo.Append("]\n");

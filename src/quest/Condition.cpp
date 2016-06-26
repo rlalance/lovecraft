@@ -31,5 +31,6 @@ void Condition::Trigger(CYIString condition)
 
 CYIString Condition::ToString() const 
 {
-    return m_condition + ": " + m_bFulfilled;
+    CYIString stateString = m_bFulfilled ? "True" : "False";
+    return m_condition + ": " + stateString;
 }

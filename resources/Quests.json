@@ -48,11 +48,11 @@
           "Resolutions": [
             {
               "Description": "I need to find a hideout for the VIPs and survivors. A secure building is preferable. The prison might be a good place.",
-              "Resolution_Condition": ""
+              "Conditions":[]
             },
             {
               "Description": "I found the prison. The place seems secure enough, and also has an independant supply of water and electricity.",
-              "Resolution_Condition": "discover:location:prison"
+              "Conditions":["discover:location:prison"]
             }
           ]
         },

@@ -139,12 +139,12 @@ CYIString QuestModel::ToString()
 
     questInfo.Append("Preconditions: [");
     for (YI_UINT32 i = 0; i < m_preconditions.size(); ++i)
-    {
+    {        
         questInfo.Append(std::to_string(i) + ": " + m_preconditions[i]->ToString());
         
         if(i < m_preconditions.size()-1)
         {
-            questInfo.Append(",");
+            questInfo.Append(", ");
         }
     }
     questInfo.Append("]\n");
