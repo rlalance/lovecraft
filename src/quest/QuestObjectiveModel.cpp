@@ -52,16 +52,13 @@ void QuestObjectiveModel::Trigger(CYIString condition)
         {
             CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
 
-            resolution.Get()->FullfillCondition(condition);
+            resolution->FullfillCondition(condition);
         }
     }
 }
 
-CYIString QuestObjectiveModel::GetDisplayText()
+bool QuestObjectiveModel::IsResolved() const
 {
-    CYIString displayText;
-    displayText.Append("ObjectiveName: " + m_name + "\n");
-
     for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {
         CYIAny data(GetItemData(GetIndex(i, 0)));
@@ -70,10 +67,44 @@ CYIString QuestObjectiveModel::GetDisplayText()
         {
             CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
 
-            //Here I must find the relevant resolution (or unresolved) text.
+            if (resolution->HasConditions())
+            {
+                if (resolution->IsFulfilled())
+                {
+                    return true;
+                }
+            }
         }
     }
 
+    return false;
+}
+
+CYIString QuestObjectiveModel::GetDisplayText()
+{
+    CYIString displayText;
+    YI_INT32 resolutionIndex = 0;
+
+    displayText.Append("ObjectiveName: " + m_name + "\n");
+
+    for (YI_INT32 i = 0; i < GetRowCount() && resolutionIndex == 0; ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+            if (resolution->HasConditions() && resolution->IsFulfilled())
+            {
+                resolutionIndex = i;
+            }            
+        }
+    }
+
+    CYIAny data(GetItemData(GetIndex(resolutionIndex, 0)));
+    CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+
+    displayText.Append(resolution->GetDisplayText() + "\n");
     return displayText;
 }
 

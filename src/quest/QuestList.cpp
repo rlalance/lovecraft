@@ -87,9 +87,9 @@ CYIString QuestList::GetDisplayText()
         {
             CYISharedPtr<QuestModel> quest = data.Get<CYISharedPtr<QuestModel>>();
 
-            if (quest.Get()->PreconditionsFulfilled())
+            if (quest->PreconditionsFulfilled())
             {
-                displayText.Append(quest.Get()->GetDisplayText() + "\n");
+                displayText.Append(quest->GetDisplayText() + "\n");
             }
         }
     }

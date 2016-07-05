@@ -20,7 +20,7 @@ QuestModel::~QuestModel()
 
 bool QuestModel::PreconditionsFulfilled() const
 {
-    bool fulfilled = false;
+    bool fulfilled = true;
     for (CYISharedPtr<Condition> precondition : m_preconditions)
     {
         fulfilled = fulfilled && precondition->IsFulfilled();
@@ -96,6 +96,15 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value& questJSONObject)
 
 void QuestModel::Trigger(CYIString condition)
 {
+    for (CYISharedPtr<Condition> p_condition : m_preconditions)
+    {
+        if (p_condition->GetCondition() == condition)
+        {
+            p_condition->Trigger();
+        }
+
+    }
+
     for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {
         CYIAny data(GetItemData(GetIndex(i, 0)));
@@ -112,22 +121,30 @@ void QuestModel::Trigger(CYIString condition)
 CYIString QuestModel::GetDisplayText()
 {
     CYIString displayText;
+    bool foundUnresolvedObjective = false;
 
-    displayText.Append("QuestName: " + m_name + "\n");
-    displayText.Append("QuestDescription: " + m_description + "\n");
+    if (PreconditionsFulfilled())
+    {        
+        displayText.Append(m_name + "\n");
+        displayText.Append(m_description + "\n");
 
-    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
-    {
-        CYIAny data(GetItemData(GetIndex(i, 0)));
-
-        if (!data.Empty())
+        for (YI_INT32 i = 0; i < GetRowCount() && !foundUnresolvedObjective; ++i)
         {
-            CYISharedPtr<QuestObjectiveModel> objective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
+            CYIAny data(GetItemData(GetIndex(i, 0)));
 
-            displayText.Append(objective.Get()->GetDisplayText() + "\n");
+            if (!data.Empty())
+            {
+                CYISharedPtr<QuestObjectiveModel> objective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
+
+                if (!objective->IsResolved())
+                {
+                    foundUnresolvedObjective = true;
+                }
+
+                displayText.Append(objective->GetDisplayText() + "\n");
+            }
         }
     }
-
     return displayText;
 }
 

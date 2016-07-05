@@ -11,14 +11,14 @@ class QuestObjectiveResolution
 public:
     QuestObjectiveResolution(CYIString description);
     ~QuestObjectiveResolution();
-
     static QuestObjectiveResolution* FromJSON(const yi::rapidjson::Value& resolutionJSONObject);
 
     bool IsFulfilled() const;
-
     void FullfillCondition(CYIString condition);
+    bool HasConditions() const;
 
     CYIString ToString() const;
+    CYIString GetDisplayText() const;
 
 private:
     void AddCondition(Condition* condition);

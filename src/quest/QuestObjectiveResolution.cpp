@@ -57,6 +57,12 @@ void QuestObjectiveResolution::FullfillCondition(CYIString condition)
     }
 }
 
+bool QuestObjectiveResolution::HasConditions() const
+{
+    if (m_conditions.size() > 0) return true;    
+    else return false;
+}
+
 CYIString QuestObjectiveResolution::ToString() const
 {
     CYIString resolutionInfo;
@@ -74,6 +80,15 @@ CYIString QuestObjectiveResolution::ToString() const
         }
     }
     resolutionInfo.Append("]\n");
+
+    return resolutionInfo;
+}
+
+CYIString QuestObjectiveResolution::GetDisplayText() const
+{
+    CYIString resolutionInfo;
+
+    resolutionInfo.Append(m_description + "\n");
 
     return resolutionInfo;
 }
