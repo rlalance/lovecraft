@@ -37,7 +37,7 @@ QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson
 
 bool QuestObjectiveResolution::IsFulfilled() const
 {
-    bool fulfilled = false;
+    bool fulfilled = true;
     for (CYISharedPtr<Condition> condition : m_conditions)
     {
         fulfilled = fulfilled && condition->IsFulfilled();
@@ -88,7 +88,7 @@ CYIString QuestObjectiveResolution::GetDisplayText() const
 {
     CYIString resolutionInfo;
 
-    resolutionInfo.Append(m_description + "\n");
+    resolutionInfo.Append(m_description);
 
     return resolutionInfo;
 }

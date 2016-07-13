@@ -120,14 +120,12 @@ void QuestModel::Trigger(CYIString condition)
 
 CYIString QuestModel::GetDisplayText()
 {
-    CYIString displayText;
+    CYIString questInfo;
+    CYIString objectivesInfo;
     bool foundUnresolvedObjective = false;
 
     if (PreconditionsFulfilled())
     {        
-        displayText.Append(m_name + "\n");
-        displayText.Append(m_description + "\n");
-
         for (YI_INT32 i = 0; i < GetRowCount() && !foundUnresolvedObjective; ++i)
         {
             CYIAny data(GetItemData(GetIndex(i, 0)));
@@ -141,11 +139,20 @@ CYIString QuestModel::GetDisplayText()
                     foundUnresolvedObjective = true;
                 }
 
-                displayText.Append(objective->GetDisplayText() + "\n");
+                objectivesInfo.Append(objective->GetDisplayText() + "\n");
             }
         }
+
+        questInfo.Append(m_name);
+
+        if (!foundUnresolvedObjective)
+        {
+            questInfo.Append(" (Complete)");
+        }
+        questInfo.Append(": " + m_description + "\n");
+        questInfo.Append(objectivesInfo);
     }
-    return displayText;
+    return questInfo;
 }
 
 CYIString QuestModel::ToString()

@@ -120,7 +120,7 @@
             },
             {
               "Description": "The Head Scientist has reached the Prison and is safe and sound.",
-              "Conditions":["rescue:maincharacter:prince"]
+              "Conditions":["rescue:maincharacter:head_scientist"]
             }
           ]
         },
@@ -175,7 +175,7 @@
               "Conditions":["state:chief_advisor:dead"]
             },
             {
-              "Description": "The Chief Advisor tried dealing with the two scientific factions.He asked them for help with dealing with the strange creatures that were then roaming in the city. The private military corporation had already begun attacking other cities, so the country could not afford to fight an interal threat as well.",
+              "Description": "The Chief Advisor tried dealing with the two scientific factions. He asked them for help with dealing with the strange creatures that were then roaming in the city. The private military corporation had already begun attacking other cities, so the country could not afford to fight an interal threat as well.",
               "Conditions":["speak:chief_advisor:conflict"]
             }
           ]

@@ -85,7 +85,7 @@ CYIString QuestObjectiveModel::GetDisplayText()
     CYIString displayText;
     YI_INT32 resolutionIndex = 0;
 
-    displayText.Append("ObjectiveName: " + m_name + "\n");
+    displayText.Append("\t" + m_name + ": ");
 
     for (YI_INT32 i = 0; i < GetRowCount() && resolutionIndex == 0; ++i)
     {

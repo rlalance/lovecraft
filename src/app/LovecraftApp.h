@@ -6,6 +6,7 @@
 
 #include <framework/YiApp.h>
 #include <smartptr/YiScopedPtr.h>
+#include <quest/QuestManager.h>
 
 class LovecraftApp : public CYIApp
 {
@@ -31,9 +32,11 @@ public:
      \details Called on each frame before the update of the scene tree. This function may be used to drive other time-dependent components of an application which are not managed by You.i Engine. 
      */
     virtual void UserUpdate();
+
+    //Test methods
     void TestsQuests() const;
     void TestLoadingTMX();
-
+    static void TestQuestProgression(QuestManager* quest_manager);
 private:
     CYIScopedPtr<AppController> m_pAppController;
 
