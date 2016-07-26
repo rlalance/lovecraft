@@ -2,7 +2,7 @@
 
 QuestManager::QuestManager(CYIString questFilePath)
 {
-    Initialize(questFilePath);
+    LoadQuestsFromJSON(questFilePath);
 }
 
 QuestManager::~QuestManager()
@@ -10,9 +10,9 @@ QuestManager::~QuestManager()
     delete m_pQuests;
 }
 
-void QuestManager::Trigger(CYIString condition)
+void QuestManager::ActivateCondition(CYIString condition)
 {
-    m_pQuests->Trigger(condition);
+    m_pQuests->ActivateCondition(condition);
 }
 
 CYIString QuestManager::AllQuestsToString() const
@@ -27,7 +27,6 @@ CYIString QuestManager::GetAllQuestsDisplayText() const
 
 void QuestManager::Initialize(CYIString path)
 {
-    LoadQuestsFromJSON(path);
 }
 
 void QuestManager::LoadQuestsFromJSON(CYIString path)

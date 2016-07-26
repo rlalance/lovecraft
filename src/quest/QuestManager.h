@@ -9,7 +9,7 @@ public:
     QuestManager(CYIString questFilePath);
     ~QuestManager();
 
-    void Trigger(CYIString condition);
+    void ActivateCondition(CYIString condition);
 
     CYIString AllQuestsToString() const;
     CYIString GetAllQuestsDisplayText() const;

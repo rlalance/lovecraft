@@ -13,16 +13,16 @@ public:
     QuestList();
     ~QuestList();
 
-    static QuestList* FromJSON(CYIString path);
-    static QuestList* FromJSON(yi::rapidjson::Document* document);
+    static QuestList *FromJSON(CYIString path);
+    static QuestList *FromJSON(yi::rapidjson::Document *document);
 
-    void Trigger(CYIString condition);
+    void ActivateCondition(CYIString condition);
 
     CYIString GetDisplayText();
     CYIString ToString();
 
 private:
-    void AddRowsToMatchIndex(YI_INT32 index);
-    void AddQuest(QuestModel* quest, YI_INT32 index);  
+    void AddRowsToMatchIndex(YI_INT32 nIndex);
+    void AddQuest(QuestModel *quest, YI_INT32 nIndex);  
 };
 #endif

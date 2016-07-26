@@ -16,21 +16,22 @@ bool Condition::IsFulfilled() const
     return m_bFulfilled;
 }
 
-void Condition::Trigger()
+void Condition::Activate()
 {
     m_bFulfilled = true;
 }
 
-void Condition::Trigger(CYIString condition)
+void Condition::Activate(CYIString condition)
 {
     if (condition == m_condition)
     {
-        Trigger();
+        Activate();
     }
 }
 
 CYIString Condition::ToString() const 
 {
     CYIString stateString = m_bFulfilled ? "True" : "False";
+
     return m_condition + ": " + stateString;
 }

@@ -10,7 +10,7 @@ QuestList::~QuestList()
     
 }
 
-QuestList* QuestList::FromJSON(CYIString path)
+QuestList *QuestList::FromJSON(CYIString path)
 {
     yi::rapidjson::Document* document;
     CYIParsingError parsingError;
@@ -21,7 +21,7 @@ QuestList* QuestList::FromJSON(CYIString path)
     return FromJSON(document);
 }
 
-QuestList* QuestList::FromJSON(yi::rapidjson::Document* document)
+QuestList *QuestList::FromJSON(yi::rapidjson::Document* document)
 {
     yi::rapidjson::Value& questArray = (*document)["Quests"];
     YI_ASSERT(questArray.IsArray(), "QuestList::FromJSON", "Could not find quests array in JSON file.");
@@ -49,7 +49,7 @@ void QuestList::AddRowsToMatchIndex(YI_INT32 index)
     }
 }
 
-void QuestList::AddQuest(QuestModel* quest, YI_INT32 index)
+void QuestList::AddQuest(QuestModel *quest, YI_INT32 index)
 {
     AddRowsToMatchIndex(index);
 
@@ -60,7 +60,7 @@ void QuestList::AddQuest(QuestModel* quest, YI_INT32 index)
     }
 }
 
-void QuestList::Trigger(CYIString condition)
+void QuestList::ActivateCondition(CYIString condition)
 {
     for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {
@@ -70,7 +70,8 @@ void QuestList::Trigger(CYIString condition)
         {
             CYISharedPtr<QuestModel> quest = data.Get<CYISharedPtr<QuestModel>>();
 
-            quest.Get()->Trigger(condition);
+            quest->ActivatePreCondition(condition);
+            quest->ActivateCondition(condition);
         }
     }
 }

@@ -32,7 +32,7 @@ bool LovecraftApp::UserInit()
 
     TestsQuests();
 
-    TestLoadingTMX();
+    //TestLoadingTMX();
 
     return true;
 }
@@ -123,7 +123,6 @@ void LovecraftApp::UserUpdate()
     // This per-frame hook can be used to drive components of an application which rely on a time-step and are not managed by You.i Engine.
 }
 
-
 void LovecraftApp::TestsQuests() const
 {
     //TMX loading test
@@ -159,58 +158,58 @@ void LovecraftApp::TestQuestProgression(QuestManager* quest_manager)
     YI_LOGI("LovecraftApp::TestQuestProgression", "DisplayText: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After Speaking to handler
-    quest_manager->Trigger(CYIString("speak:handler:briefing"));
+    quest_manager->ActivateCondition(CYIString("speak:handler:briefing"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After talking to handler: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After picking up healthkit and taser
-    quest_manager->Trigger(CYIString("pickup:item:healthkit"));
-    quest_manager->Trigger(CYIString("pickup:weapon:tazer"));
+    quest_manager->ActivateCondition(CYIString("pickup:item:healthkit"));
+    quest_manager->ActivateCondition(CYIString("pickup:weapon:tazer"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After picking up healthkit and taser: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After finding hideout
-    quest_manager->Trigger(CYIString("discover:location:prison"));
+    quest_manager->ActivateCondition(CYIString("discover:location:prison"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After finding hideout: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After securing the hideout
-    quest_manager->Trigger(CYIString("use:interactable:prison_computer"));
+    quest_manager->ActivateCondition(CYIString("use:interactable:prison_computer"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After securing the hideout: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
     
     //Saving the prince
-    quest_manager->Trigger(CYIString("rescue:maincharacter:prince"));
+    quest_manager->ActivateCondition(CYIString("rescue:maincharacter:prince"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After saving the prince: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After killing the prince
-    quest_manager->Trigger(CYIString("state:prince:dead"));
+    quest_manager->ActivateCondition(CYIString("state:prince:dead"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After killing the prince: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After saving the advisor
-    quest_manager->Trigger(CYIString("rescue:maincharacter:chiefadvisor"));
+    quest_manager->ActivateCondition(CYIString("rescue:maincharacter:chiefadvisor"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After saving the advisor: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After saving the advisor
-    quest_manager->Trigger(CYIString("rescue:maincharacter:chiefadvisor"));
+    quest_manager->ActivateCondition(CYIString("rescue:maincharacter:chiefadvisor"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After saving the advisor: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After the scientist transcends
-    quest_manager->Trigger(CYIString("state:head_scientist:transcended"));
+    quest_manager->ActivateCondition(CYIString("state:head_scientist:transcended"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After the scientist transcends: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After saving the Fellow Agent
-    quest_manager->Trigger(CYIString("rescue:maincharacter:fellowagent"));
+    quest_manager->ActivateCondition(CYIString("rescue:maincharacter:fellowagent"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After saving the Fellow Agent: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
     
     //After speaking to the Advisor about the conflict
-    quest_manager->Trigger(CYIString("speak:chief_advisor:conflict"));
+    quest_manager->ActivateCondition(CYIString("speak:chief_advisor:conflict"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After speaking to the Advisor about the conflict: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 

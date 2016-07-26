@@ -31,18 +31,17 @@ void QuestObjectiveModel::AddRowsToMatchIndex(YI_INT32 index)
     }
 }
 
-void QuestObjectiveModel::AddResolution(QuestObjectiveResolution* resolution, YI_INT32 index)
+void QuestObjectiveModel::AddResolution(QuestObjectiveResolution *pObjectiveResolution, YI_INT32 nIndex)
 {
-    AddRowsToMatchIndex(index);
+    AddRowsToMatchIndex(nIndex);
 
-    if (HasIndex(index, 0))
+    if (HasIndex(nIndex, 0))
     {
-        CYISharedPtr<QuestObjectiveResolution> resolutionPtr = CYISharedPtr<QuestObjectiveResolution>(resolution);
-        SetItemData(GetIndex(index, 0), CYIAny(resolutionPtr));
+        SetItemData(GetIndex(nIndex, 0), CYIAny(CYISharedPtr<QuestObjectiveResolution>(pObjectiveResolution)));
     }
 }
 
-void QuestObjectiveModel::Trigger(CYIString condition)
+void QuestObjectiveModel::ActivateCondition(CYIString condition)
 {
     for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {
@@ -50,9 +49,9 @@ void QuestObjectiveModel::Trigger(CYIString condition)
 
         if (!data.Empty())
         {
-            CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+            CYISharedPtr<QuestObjectiveResolution> pObjectiveResolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
 
-            resolution->FullfillCondition(condition);
+            pObjectiveResolution->FullfillCondition(condition);
         }
     }
 }
@@ -65,11 +64,11 @@ bool QuestObjectiveModel::IsResolved() const
 
         if (!data.Empty())
         {
-            CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+            CYISharedPtr<QuestObjectiveResolution> pObjectiveResolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
 
-            if (resolution->HasConditions())
+            if (pObjectiveResolution->HasConditions())
             {
-                if (resolution->IsFulfilled())
+                if (pObjectiveResolution->IsFulfilled())
                 {
                     return true;
                 }
@@ -93,8 +92,9 @@ CYIString QuestObjectiveModel::GetDisplayText()
 
         if (!data.Empty())
         {
-            CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
-            if (resolution->HasConditions() && resolution->IsFulfilled())
+            CYISharedPtr<QuestObjectiveResolution> pObjectiveResolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+
+            if (pObjectiveResolution->HasConditions() && pObjectiveResolution->IsFulfilled())
             {
                 resolutionIndex = i;
             }            
@@ -105,10 +105,11 @@ CYIString QuestObjectiveModel::GetDisplayText()
     CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
 
     displayText.Append(resolution->GetDisplayText() + "\n");
+
     return displayText;
 }
 
-QuestObjectiveModel* QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& objectiveJSONObject)
+QuestObjectiveModel *QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& objectiveJSONObject)
 {
     CYIParsingError parsingError;
 
@@ -117,20 +118,21 @@ QuestObjectiveModel* QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& o
     CYIRapidJSONUtility::GetStringField(&objectiveJSONObject, "Name", name, parsingError);
     YI_ASSERT(!parsingError.HasError(), "QuestObjectiveModel::FromJSON", parsingError.GetParsingErrorMessage());
 
-    QuestObjectiveModel *newObjective = new QuestObjectiveModel(name);
+    QuestObjectiveModel *pNewObjective = new QuestObjectiveModel(name);
 
     const yi::rapidjson::Value &resolutions = objectiveJSONObject["Resolutions"];
     YI_ASSERT(resolutions.IsArray(), "QuestModel::FromJSON", "Could not find resolutions array in JSON file.");
 
     std::vector<CYIString> questResolutionList;
+
     for (yi::rapidjson::SizeType r = 0; r < resolutions.Size(); ++r)
     {
         const yi::rapidjson::Value &resolution = resolutions[r];
 
-        newObjective->AddResolution(QuestObjectiveResolution::FromJSON(resolution), r);
+        pNewObjective->AddResolution(QuestObjectiveResolution::FromJSON(resolution), r);
     }
 
-    return newObjective;
+    return pNewObjective;
 }
 
 CYIString QuestObjectiveModel::ToString()
@@ -144,9 +146,9 @@ CYIString QuestObjectiveModel::ToString()
 
         if (!data.Empty())
         {
-            CYISharedPtr<QuestObjectiveResolution> resolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
+            CYISharedPtr<QuestObjectiveResolution> pObjectiveResolution = data.Get<CYISharedPtr<QuestObjectiveResolution>>();
 
-            objectiveInfo.Append(std::to_string(i) + ": " + resolution->ToString() + "\n");
+            objectiveInfo.Append(std::to_string(i) + ": " + pObjectiveResolution->ToString() + "\n");
         }
     }
 

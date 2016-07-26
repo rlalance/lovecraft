@@ -17,12 +17,12 @@ public:
     bool PreconditionsFulfilled() const;
 
     void AddRowsToMatchIndex(YI_INT32 index);
-    void AddObjective(QuestObjectiveModel* objective, YI_INT32 index);
+    void AddObjective(QuestObjectiveModel *objective, YI_INT32 index);
 
-    void AddPrecondition(Condition* precondition);
-    static QuestModel* FromJSON(const yi::rapidjson::Value& jsonObject);
-
-    void Trigger(CYIString condition);
+    void AddPrecondition(Condition *precondition);
+    static QuestModel *FromJSON(const yi::rapidjson::Value &jsonObject);
+    void ActivatePreCondition(CYIString condition);
+    void ActivateCondition(CYIString condition);
 
     CYIString GetDisplayText();
     CYIString ToString();

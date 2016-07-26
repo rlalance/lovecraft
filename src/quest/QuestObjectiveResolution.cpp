@@ -20,7 +20,7 @@ QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson
     CYIRapidJSONUtility::GetStringField(&resolutionJSONObject, "Description", description, parsingError);
     YI_ASSERT(!parsingError.HasError(), "QuestObjectiveResolution::FromJSON", parsingError.GetParsingErrorMessage());
 
-    QuestObjectiveResolution* quest_objective_resolution = new QuestObjectiveResolution(description);
+    QuestObjectiveResolution* pQuestObjectiveResolution = new QuestObjectiveResolution(description);
 
     const yi::rapidjson::Value& conditions = resolutionJSONObject["Conditions"];
     YI_ASSERT(conditions.IsArray(), "QuestList::FromJSON", "Could not find conditions array in JSON file.");
@@ -29,15 +29,16 @@ QuestObjectiveResolution* QuestObjectiveResolution::FromJSON(const yi::rapidjson
     {
         const yi::rapidjson::Value& condition = conditions[i];
 
-        quest_objective_resolution->AddCondition(new Condition(condition.GetString()));
+        pQuestObjectiveResolution->AddCondition(new Condition(condition.GetString()));
     }
 
-    return quest_objective_resolution;
+    return pQuestObjectiveResolution;
 }
 
 bool QuestObjectiveResolution::IsFulfilled() const
 {
     bool fulfilled = true;
+
     for (CYISharedPtr<Condition> condition : m_conditions)
     {
         fulfilled = fulfilled && condition->IsFulfilled();
@@ -52,15 +53,14 @@ void QuestObjectiveResolution::FullfillCondition(CYIString condition)
     {
         if (p_condition->GetCondition() == condition)
         {
-            p_condition->Trigger();
+            p_condition->Activate();
         }
     }
 }
 
 bool QuestObjectiveResolution::HasConditions() const
 {
-    if (m_conditions.size() > 0) return true;    
-    else return false;
+    return m_conditions.size() > 0;
 }
 
 CYIString QuestObjectiveResolution::ToString() const
@@ -93,7 +93,7 @@ CYIString QuestObjectiveResolution::GetDisplayText() const
     return resolutionInfo;
 }
 
-void QuestObjectiveResolution::AddCondition(Condition* condition)
+void QuestObjectiveResolution::AddCondition(Condition *pCondition)
 {
-    m_conditions.push_back(CYISharedPtr<Condition>(condition));
+    m_conditions.push_back(CYISharedPtr<Condition>(pCondition));
 }

@@ -16,14 +16,14 @@ public:
     ~QuestObjectiveModel();
 
     void AddRowsToMatchIndex(YI_INT32 index);
-    void AddResolution(QuestObjectiveResolution* resolution, YI_INT32 index);
+    void AddResolution(QuestObjectiveResolution *resolution, YI_INT32 index);
 
-    void Trigger(CYIString condition);
+    void ActivateCondition(CYIString condition);
     bool IsResolved() const;
 
     CYIString GetDisplayText();
     CYIString ToString();
-    static QuestObjectiveModel* FromJSON(const yi::rapidjson::Value& objectiveJSONObject);
+    static QuestObjectiveModel *FromJSON(const yi::rapidjson::Value& objectiveJSONObject);
 
 private:
     void Initialize(CYIString name);
