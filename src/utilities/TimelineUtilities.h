@@ -1,8 +1,8 @@
 #ifndef _TIMELINEUTILITIES_H
 #define _TIMELINEUTILITIES_H
 
+#include <animation/YiTimelineGroup.h>
 #include <utility/YiString.h>
-
 #include <scenetree/YiSceneNode.h>
 
 class CYIAbstractTimeline;
@@ -10,7 +10,6 @@ class CYIAnimationToggleController;
 class CYISceneNode;
 class CYISceneView;
 class CYITimeline;
-class CYITimelineGroup;
 
 /*!
  *  Definition for a property animation that will eventually be used to play an animation on a CYISceneNode
@@ -58,15 +57,15 @@ namespace TimelineUtilities
      *  \details Returns one of the engine built in interpolators.
      */
     CYITimeInterpolator *GetTimeInterpolatorFromInterpolatorType(PropertyAnimationDefinition::eTimeInterpolatorType type);
-
-    CYIAbstractTimeline *RecursiveCreateNodeParallelTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms = 0);
-    CYIAbstractTimeline *RecursiveCreateNodeSerialTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms = 0);
-    void RecursiveBuildNodeParallelTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms = 0);
-    void RecursiveBuildSerialTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms = 0);
-    CYITimeline *GetTimeline(const CYIString &markerName, CYISceneView *pSceneView);
-    void AddNodeTimelineToGroup(CYITimelineGroup *pGroup, const CYISceneNode *pNode, const CYIString &markerName, YI_UINT64 timelineOffsetInms = 0);
+    CYITimelineGroup *RecursiveCreateNodeParallelTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms = 0);
+    CYITimelineGroup *RecursiveCreateNodeSerialTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms = 0);
+    void RecursiveBuildNodeParallelTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms = 0);
+    void RecursiveBuildSerialTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms = 0);
+    CYITimeline *GetTimeline(CYISceneView *pSceneView, const CYIString &markerName);
+    void AddNodeTimelineToGroup(CYITimelineGroup *pGroup, const CYISceneNode *pNode, const CYIString &markerName, YI_UINT64 nTimelineOffsetInms = 0);
     CYIAnimationToggleController *BuildDirectionAnimationController(CYISceneView *pView, const CYIString &baseName);
     void StartPropertyAnimation(CYISceneNode *pSceneNode, PropertyAnimationDefinition propertyAnimationDefinition);
+    bool HasViewFocusInTimelines(CYISceneView *pView);
 };
 
 #endif

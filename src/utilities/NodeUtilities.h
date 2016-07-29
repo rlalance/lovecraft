@@ -18,13 +18,8 @@ namespace Utility
 {
     enum GET_NODE_FLAG
     {
-        GET_NODE_FLAG_MANDATORY=0, GET_NODE_FLAG_OPTIONAL
-    };
-
-    enum test
-    {
-        BLAH,
-        BLAH2
+        GET_NODE_FLAG_MANDATORY=0, 
+        GET_NODE_FLAG_OPTIONAL
     };
 
     const CYIString TAG("Utility");

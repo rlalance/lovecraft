@@ -4,6 +4,8 @@
     <layout filename="EmptySample_MainComp.layout"/>
     <layout dir="tablet" filename="Activity_Main.layout"/>
     <layout dir="tablet" filename="MainNav_Main.layout"/>
+    <layout dir="tablet" filename="Book_Main.layout"/>
+    <layout dir="tablet" filename="Notifications_Main.layout"/>
 	<drawable dir="default" filename="test_xml_level.tmx"/>
 	<drawable dir="default" filename="super_mario_one_tileset.png"/>
 	<drawable dir="default" filename="legend_of_zelda_one_overworld_tiles.png"/>

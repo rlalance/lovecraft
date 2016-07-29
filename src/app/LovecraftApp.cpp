@@ -125,17 +125,8 @@ void LovecraftApp::UserUpdate()
 
 void LovecraftApp::TestsQuests() const
 {
-    //TMX loading test
-    tmxparser::TmxReturn error;
-    tmxparser::TmxMap map;
-
-    // test from file
     CYIString assetPath = GetAssetsPath();
-
     CYIString questsPath = assetPath + "resources/" + "Quests.json";
-    CYIString levelPath = assetPath + "resources/" + "test_xml_level.tmx";
-
-    error = tmxparser::parseFromFile(levelPath.GetData(), &map, assetPath.GetData());
 
     QuestManager* questManager = new QuestManager(questsPath);
 
@@ -146,6 +137,17 @@ void LovecraftApp::TestsQuests() const
 
 void LovecraftApp::TestLoadingTMX()
 {
+    //TMX loading test
+    tmxparser::TmxReturn error;
+    tmxparser::TmxMap map;
+
+    // test from file
+    CYIString assetPath = GetAssetsPath();
+
+    CYIString levelPath = assetPath + "resources/" + "test_xml_level.tmx";
+
+    error = tmxparser::parseFromFile(levelPath.GetData(), &map, assetPath.GetData());
+
     CYIAssetLoader *pAssetLoader = CYIFramework::GetInstance()->GetAssetLoader();
 
     CYISharedPtr<CYIAsset> pAsset = pAssetLoader->Load(YiGetTypeId<AssetTMX>(), "drawable/default/test_xml_level.tmx", YI_NULL);

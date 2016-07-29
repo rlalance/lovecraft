@@ -1,0 +1,72 @@
+{
+    "INVALID_DEEP_LINK_ERROR" : {
+        "type":     "Error",
+        "title":    "Invalid deep link",
+        "message":  "Unable to reach destination link"
+    },
+    
+    "APP_CONFIGURATION_ERROR" : {
+        "type":     "Dialog",
+        "title":    "App configuration failed",
+        "message":  "There was a problem when the app tried to reach the server",
+        "action":   "",
+        "dismiss":  ""
+    },
+
+    "VSTB_SERVER_ERROR" : {
+        "type":     "Dialog",
+        "title":    "Server Error",
+        "message":  "Please check your network and restart the application (%1)",
+        "action":   "",
+        "dismiss":  ""
+    },
+
+    "VIDEO_PLAYBACK_ERROR" : {
+        "type":     "Error",
+        "title":    "Error",
+        "message":  "Video Playback Error: %1",
+        "autodismiss": false
+    },
+    
+    "VIDEO_PLAYBACK_CHANNEL_AUTH_ERROR" : {
+        "type":     "Error",
+        "title":    "Channel Access Denied",
+        "message":  "The active account does not have access to this content channel",
+        "autodismiss": false
+    },
+    
+    "VIDEO_CONTENT_AUTH_LEVEL_ERROR" : {
+        "type":     "Error",
+        "title":    "Premium Content - Please Log In",
+        "message":  "Please log in to a premium account to view this content",
+        "autodismiss": false
+    },
+    
+    "NETWORK_CONNECTION_ERROR" : {
+        "type":     "Error",
+        "title":    "Network Connection Error",
+        "message":  "Unable to reach the server"
+    },
+    
+    "LOGOUT_CONFIRMATION" : {
+        "type":     "Dialog",
+        "title":    "Logout",
+        "message":  "Are you sure you would like to logout of FoxPlay?",
+        "action":   "OK",
+        "dismiss":  "Cancel"
+    },
+    
+    "LOGOUT_SUCCESS" : {
+        "type":     "Success",
+        "title":    "Logout succeeded",
+        "message":  "Logout succeeded"
+    },
+    
+    "LOGOUT_FAIL" : {
+        "type":     "Error",
+        "title":    "Logout failed",
+        "message":  "Logout failed"
+    }
+}
+
+

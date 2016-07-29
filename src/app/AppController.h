@@ -1,6 +1,7 @@
 #ifndef _APPCONTROLLER_H_
 #define _APPCONTROLLER_H_
 
+#include "notification/NotificationController.h"
 #include "screen/NavigationController.h"
 
 #include <signal/YiSignalHandler.h>
@@ -19,8 +20,6 @@ public:
 
 private:
     void BuildStateMachine();
-
-
     void ConfigInitStateEntered();
     void ConfigInitStateExited();
     void RunningStateEntered();
@@ -35,6 +34,7 @@ private:
     CYISignal<> TransitionFromConfigInitToRunning;
 
     NavigationController m_NavigationController;
+    NotificationController m_notificationController;
 
     YI_DISALLOW_COPY_AND_ASSIGN(AppController);
 };

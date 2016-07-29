@@ -89,6 +89,9 @@ std::vector<CYIScreenTransitionManager::ScreenTransitionBundle> NavigationContro
     case SPLASH:
         screenHistory.push_back(TransitionBundleFor(CreateScreenViewController(SPLASH)));
         break;
+    case BOOK:
+        screenHistory.push_back(TransitionBundleFor(CreateScreenViewController(BOOK)));
+        break;
     }
 
     return screenHistory;
