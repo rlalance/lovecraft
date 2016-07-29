@@ -1,5 +1,10 @@
 #include "QuestManager.h"
 
+CYISignal<QuestModel *> QuestManager::QuestAvailableSig;
+CYISignal<QuestModel *> QuestManager::QuestAcceptedSig;
+CYISignal<QuestObjectiveModel *> QuestManager::ObjectiveCompletedSig;
+CYISignal<QuestModel *> QuestManager::QuestCompletedSig;
+
 QuestManager::QuestManager(CYIString questFilePath)
 {
     LoadQuestsFromJSON(questFilePath);

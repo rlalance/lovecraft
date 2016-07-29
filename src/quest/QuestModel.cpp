@@ -2,34 +2,72 @@
 #include <datamodel\YiAbstractDataModel.h>
 #include "QuestModel.h"
 #include "QuestObjectiveModel.h"
+#include "QuestManager.h"
 
 QuestModel::QuestModel(CYIString name, CYIString description) : 
     CYIAbstractDataModel(1), 
     m_name(name), 
     m_description(description)
 {
+    m_bAccepted = false;
 }
 
 void QuestModel::Initialize(CYIString name, CYIString description)
 {
     m_name = name;
     m_description = description;
+    m_bAccepted = false;
 }
 
 QuestModel::~QuestModel()
 {
 }
 
-bool QuestModel::PreconditionsFulfilled() const
+bool QuestModel::IsAvailable() const
 {
-    bool bFulfilled = true;
+    bool bAvailable = true;
 
     for (CYISharedPtr<Condition> precondition : m_preconditions)
     {
-        bFulfilled = bFulfilled && precondition->IsFulfilled();
+        bAvailable = bAvailable && precondition->IsFulfilled();
     }
 
-    return bFulfilled;
+    return bAvailable;
+}
+
+bool QuestModel::IsAccepted() const
+{
+    return m_bAccepted;
+}
+
+bool QuestModel::IsCompleted() const
+{
+    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    {
+        CYIAny data(GetItemData(GetIndex(i, 0)));
+
+        if (!data.Empty())
+        {
+            CYISharedPtr<QuestObjectiveModel> pObjective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
+
+            if (!pObjective->IsResolved())
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+void QuestModel::Accept()
+{
+    if (IsAvailable() && !m_bAccepted)
+    {
+        m_bAccepted = true;
+
+        QuestManager::QuestAcceptedSig(this);
+    }
 }
 
 void QuestModel::AddRowsToMatchIndex(YI_INT32 nIndex)
@@ -99,39 +137,53 @@ QuestModel* QuestModel::FromJSON(const yi::rapidjson::Value &questJSONObject)
 
 void QuestModel::ActivatePreCondition(CYIString condition)
 {
-    // Find and triggers a pre condition
-    for (CYISharedPtr<Condition> pPreCondition : m_preconditions)
+    if (!IsAvailable())
     {
-        if (pPreCondition->GetCondition() == condition)
+        for (CYISharedPtr<Condition> pPreCondition : m_preconditions)
         {
-            pPreCondition->Activate();
+            if (pPreCondition->GetCondition() == condition)
+            {
+                pPreCondition->Activate();
+            }
+        }
+
+        if (IsAvailable())
+        {
+            QuestManager::QuestAvailableSig(this);
         }
     }
 }
 
 void QuestModel::ActivateCondition(CYIString condition)
 {
-    // Traverse all objectives and attempt to trigger this condition
-    for (YI_INT32 i = 0; i < GetRowCount(); ++i)
+    if (!IsCompleted())
     {
-        CYIAny data(GetItemData(GetIndex(i, 0)));
-
-        if (!data.Empty())
+        for (YI_INT32 i = 0; i < GetRowCount(); ++i)
         {
-            CYISharedPtr<QuestObjectiveModel> pObjective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
+            CYIAny data(GetItemData(GetIndex(i, 0)));
+
+            if (!data.Empty())
+            {
+                CYISharedPtr<QuestObjectiveModel> pObjective = data.Get<CYISharedPtr<QuestObjectiveModel>>();
             
-            pObjective->ActivateCondition(condition);
+                pObjective->ActivateCondition(condition);
+            }
+        }        
+
+        if (IsCompleted())
+        {
+            QuestManager::QuestCompletedSig(this);
         }
     }
 }
 
-CYIString QuestModel::GetDisplayText()
+CYIString QuestModel::GetDisplayText() const
 {
     CYIString questInfo;
     CYIString objectivesInfo;
     bool foundUnresolvedObjective = false;
 
-    if (PreconditionsFulfilled())
+    if (IsAvailable())
     {        
         for (YI_INT32 i = 0; i < GetRowCount() && !foundUnresolvedObjective; ++i)
         {
@@ -163,7 +215,7 @@ CYIString QuestModel::GetDisplayText()
     return questInfo;
 }
 
-CYIString QuestModel::ToString()
+CYIString QuestModel::ToString() const
 {
     CYIString questInfo;
     questInfo.Append("QuestName: " + m_name + "\n");
