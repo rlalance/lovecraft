@@ -85,7 +85,7 @@ bool QuestObjectiveModel::IsResolved() const
     return false;
 }
 
-CYIString QuestObjectiveModel::GetDisplayText()
+CYIString QuestObjectiveModel::GetDisplayText() const
 {
     CYIString displayText;
     YI_INT32 resolutionIndex = 0;
@@ -141,7 +141,7 @@ QuestObjectiveModel *QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& o
     return pNewObjective;
 }
 
-CYIString QuestObjectiveModel::ToString()
+CYIString QuestObjectiveModel::ToString() const
 {
     CYIString objectiveInfo;
     objectiveInfo.Append("ObjectiveName: " + m_name + "\n");

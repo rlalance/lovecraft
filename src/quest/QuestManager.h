@@ -4,7 +4,7 @@
 #include "QuestList.h"
 #include <signal/YiSignalHandler.h>
 
-class QuestManager : CYISignalHandler
+class QuestManager : public CYISignalHandler
 {
 public:
     QuestManager(CYIString questFilePath);
