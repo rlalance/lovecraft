@@ -21,8 +21,8 @@ public:
     void ActivateCondition(CYIString condition);
     bool IsResolved() const;
 
-    CYIString GetDisplayText();
-    CYIString ToString();
+    CYIString GetDisplayText() const;
+    CYIString ToString() const;
     static QuestObjectiveModel *FromJSON(const yi::rapidjson::Value& objectiveJSONObject);
 
 private:

@@ -4,6 +4,7 @@
 #include <datamodel\YiAbstractDataModel.h>
 #include <utility/YiRapidJSONUtility.h>
 #include "QuestObjectiveResolution.h"
+#include "QuestManager.h"
 
 QuestObjectiveModel::QuestObjectiveModel(CYIString name) : CYIAbstractDataModel(1)
 {
@@ -42,7 +43,7 @@ void QuestObjectiveModel::AddResolution(QuestObjectiveResolution *pObjectiveReso
 }
 
 void QuestObjectiveModel::ActivateCondition(CYIString condition)
-{
+{    
     for (YI_INT32 i = 0; i < GetRowCount(); ++i)
     {
         CYIAny data(GetItemData(GetIndex(i, 0)));
@@ -53,6 +54,11 @@ void QuestObjectiveModel::ActivateCondition(CYIString condition)
 
             pObjectiveResolution->FullfillCondition(condition);
         }
+    }
+
+    if (IsResolved())
+    {
+        QuestManager::ObjectiveCompletedSig(this);
     }
 }
 
@@ -79,7 +85,7 @@ bool QuestObjectiveModel::IsResolved() const
     return false;
 }
 
-CYIString QuestObjectiveModel::GetDisplayText()
+CYIString QuestObjectiveModel::GetDisplayText() const
 {
     CYIString displayText;
     YI_INT32 resolutionIndex = 0;
@@ -135,7 +141,7 @@ QuestObjectiveModel *QuestObjectiveModel::FromJSON(const yi::rapidjson::Value& o
     return pNewObjective;
 }
 
-CYIString QuestObjectiveModel::ToString()
+CYIString QuestObjectiveModel::ToString() const
 {
     CYIString objectiveInfo;
     objectiveInfo.Append("ObjectiveName: " + m_name + "\n");

@@ -2,8 +2,9 @@
 #define QUEST_MANAGER_H
 
 #include "QuestList.h"
+#include <signal/YiSignalHandler.h>
 
-class QuestManager
+class QuestManager : public CYISignalHandler
 {
 public:
     QuestManager(CYIString questFilePath);
@@ -13,6 +14,12 @@ public:
 
     CYIString AllQuestsToString() const;
     CYIString GetAllQuestsDisplayText() const;
+
+    //Signals
+    static CYISignal<QuestModel *> QuestAvailableSig;
+    static CYISignal<QuestModel *> QuestAcceptedSig;
+    static CYISignal<QuestObjectiveModel *> ObjectiveCompletedSig;
+    static CYISignal<QuestModel *> QuestCompletedSig;
 
 private:
     QuestList *m_pQuests;
