@@ -8,6 +8,7 @@
 #include <framework/YiApp.h>
 #include <scenetree/YiSceneManager.h>
 #include <utility/YiTranslation.h>
+#include <quest/QuestManager.h>
 
 static const CYIString TAG("NotificationController");
 
@@ -44,6 +45,31 @@ void NotificationController::Init()
 
     m_notificationDelayTimer.SetInterval(NOTIFICATION_DELAY_MS);
     m_notificationDelayTimer.TimedOut.Connect(*this, &NotificationController::CloseNotification);
+    
+    QuestManager::QuestAvailableSig.Connect(*this, &NotificationController::NotifyQuestAvailable);
+    QuestManager::QuestAcceptedSig.Connect(*this, &NotificationController::NotifyQuestAccepted);
+    QuestManager::ObjectiveCompletedSig.Connect(*this, &NotificationController::NotifyObjectiveCompleted);
+    QuestManager::QuestCompletedSig.Connect(*this, &NotificationController::NotifyQuestCompleted);
+}
+
+void NotificationController::NotifyQuestAvailable()
+{
+    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
+}
+
+void NotificationController::NotifyQuestAccepted()
+{
+    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
+}
+
+void NotificationController::NotifyObjectiveCompleted()
+{
+    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
+}
+
+void NotificationController::NotifyQuestCompleted()
+{
+    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
 }
 
 void NotificationController::LoadNotificationOverlays()

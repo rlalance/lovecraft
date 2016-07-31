@@ -61,7 +61,5 @@ void BookScreenViewController::OnPreloadScreen(CYIBundle bundle, const CYIPersis
     TabbedScreenViewController::OnPreloadScreen(bundle, stateData);
 
     PreloadFinished(this);
-
-    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
 }
 

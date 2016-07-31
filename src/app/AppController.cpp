@@ -10,7 +10,7 @@ const YI_UINT64 APP_INIT_RETRY_TIMER_MS = 5000;
 
 AppController::AppController(CYIApp &rApp)
     : m_rApp(rApp)
-    , m_NavigationController(m_rApp)
+    , m_navigationController(m_rApp)
     , m_notificationController(m_rApp)
 {
     BuildStateMachine();
@@ -69,7 +69,7 @@ void AppController::RunningStateEntered()
 {
     YI_LOGD(TAG, "RunningStateEntered");
 
-    m_NavigationController.Start(NavigationController::BOOK);
+    m_navigationController.Start(NavigationController::BOOK);
 }
 
 void AppController::RunningStateExited()

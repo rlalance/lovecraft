@@ -33,7 +33,7 @@ private:
     CYIStateMachine m_StateMachine;
     CYISignal<> TransitionFromConfigInitToRunning;
 
-    NavigationController m_NavigationController;
+    NavigationController m_navigationController;
     NotificationController m_notificationController;
 
     YI_DISALLOW_COPY_AND_ASSIGN(AppController);

@@ -23,7 +23,10 @@ public:
     virtual ~NotificationController();
 
     void Init();
-
+    void NotifyQuestAvailable();
+    void NotifyQuestAccepted();
+    void NotifyObjectiveCompleted();
+    void NotifyQuestCompleted();
 private:
     void LoadNotificationOverlays();
     FullScreenNotificationView *LoadDialogOverlay(const CYIString &sceneName, const CYIString &layoutName);
