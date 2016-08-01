@@ -6,6 +6,7 @@
 #include <animation/YiTimeInterpolators.h>
 #include <asset/YiAssetViewTemplate.h>
 #include <import/YiViewTemplate.h>
+#include <smartptr/YiScopedPtr.h>
 #include <view/YiSceneView.h>
 
 static const CYIString TAG = "TimelineUtilities";
@@ -30,10 +31,10 @@ PropertyAnimationDefinition::PropertyAnimationDefinition(YI_NODE_PROPERTY_TYPE p
 {
 }
 
-CYIAbstractTimeline *TimelineUtilities::RecursiveCreateNodeParallelTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms)
+CYITimelineGroup *TimelineUtilities::RecursiveCreateNodeParallelTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms)
 {
     CYITimelineGroup *pGroup = new CYIParallelTimelineGroup();
-    RecursiveBuildNodeParallelTimelineGroup(pGroup, pNode, markerName, timelineOffsetInms);
+    RecursiveBuildNodeParallelTimelineGroup(pGroup, pNode, markerName, nTimelineOffsetInms);
     pGroup->Finalize();
 
     if (pGroup->GetTimelineCount() == 0)
@@ -44,10 +45,20 @@ CYIAbstractTimeline *TimelineUtilities::RecursiveCreateNodeParallelTimelineGroup
     return pGroup;
 }
 
-CYIAbstractTimeline *TimelineUtilities::RecursiveCreateNodeSerialTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms)
+bool TimelineUtilities::HasViewFocusInTimelines(CYISceneView *pView)
+{
+    if (pView)
+    {
+         CYIScopedPtr<CYITimelineGroup> pFocusInTimelineGroup(TimelineUtilities::RecursiveCreateNodeParallelTimelineGroup(pView, "FocusIn"));
+        return pFocusInTimelineGroup && pFocusInTimelineGroup->GetTimelineCount() > 0;
+    }
+    return false;
+}
+
+CYITimelineGroup *TimelineUtilities::RecursiveCreateNodeSerialTimelineGroup(CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms)
 {
     CYITimelineGroup *pGroup = new CYISerialTimelineGroup();
-    RecursiveBuildSerialTimelineGroup(pGroup, pNode, markerName, timelineOffsetInms);
+    RecursiveBuildSerialTimelineGroup(pGroup, pNode, markerName, nTimelineOffsetInms);
     pGroup->Finalize();
 
     if (pGroup->GetTimelineCount() == 0)
@@ -58,20 +69,20 @@ CYIAbstractTimeline *TimelineUtilities::RecursiveCreateNodeSerialTimelineGroup(C
     return pGroup;
 }
 
-void TimelineUtilities::RecursiveBuildNodeParallelTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms)
+void TimelineUtilities::RecursiveBuildNodeParallelTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms)
 {
     if (pNode || pGroup)
     {
-        AddNodeTimelineToGroup(pGroup, pNode, markerName, timelineOffsetInms);
+        AddNodeTimelineToGroup(pGroup, pNode, markerName, nTimelineOffsetInms);
 
         for (YI_UINT32 i = 0; i < pNode->GetChildCount(); i++)
         {
-            RecursiveBuildNodeParallelTimelineGroup(pGroup, pNode->GetChild(i), markerName, timelineOffsetInms);
+            RecursiveBuildNodeParallelTimelineGroup(pGroup, pNode->GetChild(i), markerName, nTimelineOffsetInms);
         }
     }
 }
 
-void TimelineUtilities::AddNodeTimelineToGroup(CYITimelineGroup *pGroup, const CYISceneNode *pNode, const CYIString &markerName, YI_UINT64 timelineOffsetInms)
+void TimelineUtilities::AddNodeTimelineToGroup(CYITimelineGroup *pGroup, const CYISceneNode *pNode, const CYIString &markerName, YI_UINT64 nTimelineOffsetInms)
 {
     YI_ASSERT(pNode, TAG, "pNode is null");
     YI_ASSERT(pGroup, TAG, "pGroup is null");
@@ -81,13 +92,13 @@ void TimelineUtilities::AddNodeTimelineToGroup(CYITimelineGroup *pGroup, const C
 
     if (pView)
     {
-        CYIAbstractTimeline *pTimeline = GetTimeline(markerName, pView);
+        CYIAbstractTimeline *pTimeline = GetTimeline(pView, markerName);
 
         if (pTimeline)
         {
-            if (timelineOffsetInms > 0)
+            if (nTimelineOffsetInms > 0)
             {
-                pGroup->AddTimelineWithOffset(pTimeline, timelineOffsetInms);
+                pGroup->AddTimelineWithOffset(pTimeline, nTimelineOffsetInms);
             }
             else
             {
@@ -97,20 +108,20 @@ void TimelineUtilities::AddNodeTimelineToGroup(CYITimelineGroup *pGroup, const C
     }
 }
 
-void TimelineUtilities::RecursiveBuildSerialTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 timelineOffsetInms)
+void TimelineUtilities::RecursiveBuildSerialTimelineGroup(CYITimelineGroup *pGroup, CYISceneNode *pNode, CYIString markerName, YI_UINT64 nTimelineOffsetInms)
 {
     if (pNode || pGroup)
     {
-        AddNodeTimelineToGroup(pGroup, pNode, markerName, timelineOffsetInms);
+        AddNodeTimelineToGroup(pGroup, pNode, markerName, nTimelineOffsetInms);
 
         for (YI_UINT32 i = 0; i < pNode->GetChildCount(); i++)
         {
-            RecursiveBuildNodeParallelTimelineGroup(pGroup, pNode->GetChild(i), markerName, timelineOffsetInms);
+            RecursiveBuildNodeParallelTimelineGroup(pGroup, pNode->GetChild(i), markerName, nTimelineOffsetInms);
         }
     }
 }
 
-CYITimeline *TimelineUtilities::GetTimeline(const CYIString &markerName, CYISceneView *pSceneView)
+CYITimeline *TimelineUtilities::GetTimeline(CYISceneView *pSceneView, const CYIString &markerName)
 {
     YI_ASSERT(pSceneView, TAG, "pSceneView is null");
     YI_ASSERT(!markerName.IsEmpty(), TAG, "markerName is empty");

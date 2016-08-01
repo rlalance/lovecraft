@@ -9,25 +9,7 @@
 #include <framework/YiFramework.h>
 #include <view/YiPushButtonView.h>
 
-/*
-// Load a layout file which will be the root scene view.
-CYISceneView *pSceneViewMain = GetSceneManager()->LoadScene("MainNav_Main.layout", CYISceneManager::SCALE_STRETCH, CYISceneManager::V_ALIGN_CENTER, CYISceneManager::H_ALIGN_CENTER);
-
-if(!pSceneViewMain)
-{
-YI_LOGE("LovecraftApp::UserInit", "Loading scene has failed");
-return false;
-}
-
-pSceneViewMain->GetInTimeline()->StartForward();
-
-// Add the scene view to the scene manager.
-GetSceneManager()->AddScene("MainComp", pSceneViewMain, 0, CYISceneManager::LAYER_OPAQUE);
-*/
-
-
 SplashScreenViewController::SplashScreenViewController(NavigationInterface &navigationInterface, CYIApp &app) :
-     //TabbedScreenViewController(NavigationInterface::SPLASH, "SplashScreen", "Splash_Main.layout", navigationInterface, app)
      TabbedScreenViewController(NavigationInterface::SPLASH, "SplashScreen", "MainNav_Main.layout", navigationInterface, app)
     , m_tabbedViewController(navigationInterface)
     , m_pTabbedView(YI_NULL)

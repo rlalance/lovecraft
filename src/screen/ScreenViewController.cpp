@@ -3,6 +3,8 @@
 //#include "player/PlayerScreenViewController.h"
 #include "screen/ScreenViewController.h"
 #include "screen/SplashScreenViewController.h"
+#include "screen/BookScreenViewController.h"
+
 //#include "screen/ContentScreenViewController.h"
 //#include "screen/HomeLanderScreenViewController.h"
 //#include "screen/LoginScreenViewController.h"
@@ -38,6 +40,8 @@ ScreenViewController *ScreenViewController::Create(NavigationInterface::SCREEN_I
     {
     case NavigationInterface::SPLASH:
         return new SplashScreenViewController(navigationController, app);
+    case NavigationInterface::BOOK:
+        return new BookScreenViewController(navigationController, app);
     }
 
     return YI_NULL;

@@ -30,10 +30,6 @@ bool LovecraftApp::UserInit()
 
     AddTMXDecoder();
 
-    TestsQuests();
-
-    //TestLoadingTMX();
-
     return true;
 }
 
@@ -115,7 +111,14 @@ void LovecraftApp::SetApplicationPlatform(ApplicationConfiguration &applicationC
 
 bool LovecraftApp::UserStart()
 {
-    return m_pAppController->Start();
+    if (m_pAppController->Start())
+    {
+        TestsQuests();
+
+        //TestLoadingTMX();
+    }
+
+    return true;
 }
 
 void LovecraftApp::UserUpdate()
@@ -125,17 +128,8 @@ void LovecraftApp::UserUpdate()
 
 void LovecraftApp::TestsQuests() const
 {
-    //TMX loading test
-    tmxparser::TmxReturn error;
-    tmxparser::TmxMap map;
-
-    // test from file
     CYIString assetPath = GetAssetsPath();
-
     CYIString questsPath = assetPath + "resources/" + "Quests.json";
-    CYIString levelPath = assetPath + "resources/" + "test_xml_level.tmx";
-
-    error = tmxparser::parseFromFile(levelPath.GetData(), &map, assetPath.GetData());
 
     QuestManager* questManager = new QuestManager(questsPath);
 
@@ -146,6 +140,17 @@ void LovecraftApp::TestsQuests() const
 
 void LovecraftApp::TestLoadingTMX()
 {
+    //TMX loading test
+    tmxparser::TmxReturn error;
+    tmxparser::TmxMap map;
+
+    // test from file
+    CYIString assetPath = GetAssetsPath();
+
+    CYIString levelPath = assetPath + "resources/" + "test_xml_level.tmx";
+
+    error = tmxparser::parseFromFile(levelPath.GetData(), &map, assetPath.GetData());
+
     CYIAssetLoader *pAssetLoader = CYIFramework::GetInstance()->GetAssetLoader();
 
     CYISharedPtr<CYIAsset> pAsset = pAssetLoader->Load(YiGetTypeId<AssetTMX>(), "drawable/default/test_xml_level.tmx", YI_NULL);
@@ -187,11 +192,6 @@ void LovecraftApp::TestQuestProgression(QuestManager* quest_manager)
     quest_manager->ActivateCondition(CYIString("state:prince:dead"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After killing the prince: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
-
-    //After saving the advisor
-    quest_manager->ActivateCondition(CYIString("rescue:maincharacter:chiefadvisor"));
-
-    YI_LOGI("LovecraftApp::TestQuestProgression", "After saving the advisor: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After saving the advisor
     quest_manager->ActivateCondition(CYIString("rescue:maincharacter:chiefadvisor"));

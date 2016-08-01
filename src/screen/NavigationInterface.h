@@ -10,7 +10,8 @@ class NavigationInterface : public CYISignalHandler
 public:
     enum SCREEN_ID
     {
-        SPLASH
+        SPLASH,
+        BOOK
     };
 
     static const CYIString ASSET_PACKAGE_BUNDLE_KEY;
