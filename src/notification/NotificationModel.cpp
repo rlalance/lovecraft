@@ -11,16 +11,20 @@ NOTIFICATION NotificationModel::NotificationFromErrorString(const CYIString &rNo
 
     if (map.empty())
     {
-        map["INVALID_DEEP_LINK_ERROR"]  = INVALID_DEEP_LINK_ERROR;
-        map["APP_CONFIGURATION_ERROR"]  = APP_CONFIGURATION_ERROR;
-        map["VSTB_SERVER_ERROR"]        = VSTB_SERVER_ERROR;
-        map["VIDEO_PLAYBACK_ERROR"]     = VIDEO_PLAYBACK_ERROR;
-        map["VIDEO_PLAYBACK_CHANNEL_AUTH_ERROR"]  = VIDEO_PLAYBACK_CHANNEL_AUTH_ERROR;
-        map["VIDEO_CONTENT_AUTH_LEVEL_ERROR"]  = VIDEO_CONTENT_AUTH_LEVEL_ERROR;
-        map["NETWORK_CONNECTION_ERROR"] = NETWORK_CONNECTION_ERROR;
-        map["LOGOUT_CONFIRMATION"]      = LOGOUT_CONFIRMATION;
-        map["LOGOUT_SUCCESS"]           = LOGOUT_SUCCESS;
-        map["LOGOUT_FAIL"]              = LOGOUT_FAIL;
+        map["QUEST_AVAILABLE"]                      = QUEST_AVAILABLE;
+        map["QUEST_ACCEPTED"]                       = QUEST_ACCEPTED;
+        map["QUEST_COMPLETED"]                      = QUEST_COMPLETED;
+        map["QUEST_OBJECTIVE_COMPLETED"]            = QUEST_OBJECTIVE_COMPLETED;
+        map["INVALID_DEEP_LINK_ERROR"]              = INVALID_DEEP_LINK_ERROR;
+        map["APP_CONFIGURATION_ERROR"]              = APP_CONFIGURATION_ERROR;
+        map["VSTB_SERVER_ERROR"]                    = VSTB_SERVER_ERROR;
+        map["VIDEO_PLAYBACK_ERROR"]                 = VIDEO_PLAYBACK_ERROR;
+        map["VIDEO_PLAYBACK_CHANNEL_AUTH_ERROR"]    = VIDEO_PLAYBACK_CHANNEL_AUTH_ERROR;
+        map["VIDEO_CONTENT_AUTH_LEVEL_ERROR"]       = VIDEO_CONTENT_AUTH_LEVEL_ERROR;
+        map["NETWORK_CONNECTION_ERROR"]             = NETWORK_CONNECTION_ERROR;
+        map["LOGOUT_CONFIRMATION"]                  = LOGOUT_CONFIRMATION;
+        map["LOGOUT_SUCCESS"]                       = LOGOUT_SUCCESS;
+        map["LOGOUT_FAIL"]                          = LOGOUT_FAIL;
     }
 
     const std::map<CYIString, NOTIFICATION>::const_iterator iter = map.find(rNotificationString);

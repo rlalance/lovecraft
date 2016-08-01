@@ -52,24 +52,36 @@ void NotificationController::Init()
     QuestManager::QuestCompletedSig.Connect(*this, &NotificationController::NotifyQuestCompleted);
 }
 
-void NotificationController::NotifyQuestAvailable()
+void NotificationController::NotifyQuestAvailable(QuestModel *pQuestModel)
 {
-    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
+    Notification questAvailableNotification(QUEST_AVAILABLE);
+    questAvailableNotification.SetCustomMessageField(pQuestModel->GetDisplayText());
+
+    Message<Notification>(questAvailableNotification).Send();
 }
 
-void NotificationController::NotifyQuestAccepted()
+void NotificationController::NotifyQuestAccepted(QuestModel *pQuestModel)
 {
-    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
+    Notification questAvailableNotification(QUEST_AVAILABLE);
+    questAvailableNotification.SetCustomMessageField(pQuestModel->GetDisplayText());
+
+    Message<Notification>(questAvailableNotification).Send();
 }
 
-void NotificationController::NotifyObjectiveCompleted()
+void NotificationController::NotifyObjectiveCompleted(QuestObjectiveModel *pQuestObjectiveModel)
 {
-    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
+    Notification questAvailableNotification(QUEST_AVAILABLE);
+    questAvailableNotification.SetCustomMessageField(pQuestObjectiveModel->GetDisplayText());
+
+    Message<Notification>(questAvailableNotification).Send();
 }
 
-void NotificationController::NotifyQuestCompleted()
+void NotificationController::NotifyQuestCompleted(QuestModel *pQuestModel)
 {
-    Message<Notification>(NETWORK_CONNECTION_ERROR).Send();
+    Notification questAvailableNotification(QUEST_AVAILABLE);
+    questAvailableNotification.SetCustomMessageField(pQuestModel->GetDisplayText());
+
+    Message<Notification>(questAvailableNotification).Send();
 }
 
 void NotificationController::LoadNotificationOverlays()

@@ -30,10 +30,6 @@ bool LovecraftApp::UserInit()
 
     AddTMXDecoder();
 
-    TestsQuests();
-
-    //TestLoadingTMX();
-
     return true;
 }
 
@@ -115,7 +111,14 @@ void LovecraftApp::SetApplicationPlatform(ApplicationConfiguration &applicationC
 
 bool LovecraftApp::UserStart()
 {
-    return m_pAppController->Start();
+    if (m_pAppController->Start())
+    {
+        TestsQuests();
+
+        //TestLoadingTMX();
+    }
+
+    return true;
 }
 
 void LovecraftApp::UserUpdate()
@@ -189,11 +192,6 @@ void LovecraftApp::TestQuestProgression(QuestManager* quest_manager)
     quest_manager->ActivateCondition(CYIString("state:prince:dead"));
 
     YI_LOGI("LovecraftApp::TestQuestProgression", "After killing the prince: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
-
-    //After saving the advisor
-    quest_manager->ActivateCondition(CYIString("rescue:maincharacter:chiefadvisor"));
-
-    YI_LOGI("LovecraftApp::TestQuestProgression", "After saving the advisor: \n%s", quest_manager->GetAllQuestsDisplayText().GetData());
 
     //After saving the advisor
     quest_manager->ActivateCondition(CYIString("rescue:maincharacter:chiefadvisor"));

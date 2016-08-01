@@ -1,10 +1,28 @@
 {
-    "INVALID_DEEP_LINK_ERROR" : {
-        "type":     "Error",
-        "title":    "Invalid deep link",
-        "message":  "Unable to reach destination link"
+    "QUEST_AVAILABLE" : {
+        "type":     "Success",
+        "title":    "New Quest Available",
+        "message":  ""
+    },
+	
+    "QUEST_ACCEPTED" : {
+        "type":     "Success",
+        "title":    "Quest Accepted",
+        "message":  ""
+    },
+
+    "QUEST_COMPLETED" : {
+        "type":     "Success",
+        "title":    "Quest Completed",
+        "message":  ""
     },
     
+    "QUEST_OBJECTIVE_COMPLETED" : {
+        "type":     "Success",
+        "title":    "Quest Objective Completed",
+        "message":  ""
+    },
+
     "APP_CONFIGURATION_ERROR" : {
         "type":     "Dialog",
         "title":    "App configuration failed",

@@ -7,6 +7,7 @@
 #include <signal/YiSignalHandler.h>
 #include <signal/YiSignal.h>
 #include <utility/YiTimer.h>
+#include <quest/QuestModel.h>
 
 class Notification;
 class NotificationView;
@@ -23,10 +24,10 @@ public:
     virtual ~NotificationController();
 
     void Init();
-    void NotifyQuestAvailable();
-    void NotifyQuestAccepted();
-    void NotifyObjectiveCompleted();
-    void NotifyQuestCompleted();
+    void NotifyQuestAvailable(QuestModel *);
+    void NotifyQuestAccepted(QuestModel *);
+    void NotifyObjectiveCompleted(QuestObjectiveModel *);
+    void NotifyQuestCompleted(QuestModel *);
 private:
     void LoadNotificationOverlays();
     FullScreenNotificationView *LoadDialogOverlay(const CYIString &sceneName, const CYIString &layoutName);
